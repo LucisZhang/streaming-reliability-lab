@@ -134,8 +134,9 @@ Success for any Phase = its stated `make` target(s) exit 0 and produce the named
   unfinished changes, ask before including them in the Phase commit.
 - The final Phase handoff must explicitly state the verification result, produced artifacts,
   commit hash, pushed branch, and whether anything remains uncommitted.
-- End every Phase handoff by asking the user to confirm whether Codex should proceed to the
-  next Phase.
+- End every Phase handoff with Codex's readiness judgment for the next Phase: state either
+  "Ready to proceed to the next Phase" or "Not ready to proceed to the next Phase", and list
+  the concrete blockers when it is not ready.
 
 ## Resource Profiles
 
