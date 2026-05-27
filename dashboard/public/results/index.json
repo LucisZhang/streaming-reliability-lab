@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-27T15:28:29.044Z",
+  "generated_at": "2026-05-27T15:57:29.974Z",
   "source": "showcase/results/*.json",
   "artifacts": [
     {
@@ -11,6 +11,16 @@
       "finished_at": "2026-05-27T15:17:54Z",
       "command": "make eo-verify ARGS=\"--failure task-crash,checkpoint-restore,jobmanager-restart,savepoint-restore,sink-commit-fault\"",
       "logs": "showcase/logs/phase-2.1-eo-verify.log"
+    },
+    {
+      "filename": "iceberg_small_file_rewrite.json",
+      "phase": "2.2",
+      "run_id": "20260527T155713Z-a88e18f6",
+      "git_sha": "ad7ad52a0ff8",
+      "started_at": "2026-05-27T15:55:18Z",
+      "finished_at": "2026-05-27T15:57:13Z",
+      "command": "make small-file-rewrite",
+      "logs": "showcase/logs/phase-2.2-small-file-rewrite.log"
     },
     {
       "filename": "phase-1.1-smoke.json",

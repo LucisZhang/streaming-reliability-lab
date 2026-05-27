@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+  width="940" height="520" viewBox="0 0 940 520"
+  role="img" aria-labelledby="title desc">
+  <title id="title">Iceberg small-file rewrite before and after metrics</title>
+  <desc id="desc">Before and after Iceberg file and planning metrics.</desc>
+  <style>
+    .bg { fill: #f7f8f6; }
+    .title { fill: #111815; font: 700 26px system-ui, sans-serif; }
+    .subtitle { fill: #58665f; font: 15px system-ui, sans-serif; }
+    .label { fill: #1b2520; font: 700 15px system-ui, sans-serif; }
+    .value { fill: #4e5b55; font: 13px ui-monospace, monospace; }
+    .before { fill: #a75238; }
+    .after { fill: #267a4a; }
+    .legend { fill: #334039; font: 700 13px system-ui, sans-serif; }
+  </style>
+  <rect class="bg" x="0" y="0" width="940" height="520" rx="0"/>
+  <text x="32" y="42" class="title">Iceberg small-file rewrite_data_files</text>
+  <text x="32" y="68" class="subtitle">cdc_lab.orders_current metadata</text>
+  <rect x="32" y="455" width="22" height="14" class="before"/>
+  <text x="62" y="467" class="legend">Before rewrite</text>
+  <rect x="205" y="455" width="22" height="14" class="after"/>
+  <text x="235" y="467" class="legend">After rewrite</text>
+  <text x="32" y="109" class="label">Data files</text><rect x="190" y="90" width="520.0" height="26" class="before"/><rect x="190" y="124" width="21.7" height="26" class="after"/><text x="728" y="109" class="value">before 48</text><text x="728" y="143" class="value">after 2</text><text x="32" y="195" class="label">Manifests</text><rect x="190" y="176" width="520.0" height="26" class="before"/><rect x="190" y="210" width="21.7" height="26" class="after"/><text x="728" y="195" class="value">before 24</text><text x="728" y="229" class="value">after 1</text><text x="32" y="281" class="label">Median file bytes</text><rect x="190" y="262" width="220.8" height="26" class="before"/><rect x="190" y="296" width="520.0" height="26" class="after"/><text x="728" y="281" class="value">before 2809</text><text x="728" y="315" class="value">after 6614.5</text><text x="32" y="367" class="label">Planning ms</text><rect x="190" y="348" width="520.0" height="26" class="before"/><rect x="190" y="382" width="422.0" height="26" class="after"/><text x="728" y="367" class="value">before 54.92</text><text x="728" y="401" class="value">after 44.572</text>
+</svg>

@@ -61,3 +61,22 @@ results directory with the same files and `index.json` manifest.
   `sink-commit-fault`.
 - `sink-commit-fault.fault_injection`: documents the test-only
   `--checkpoint-complete-fault-event-id` mechanism, marker path, marker text, and trigger event.
+
+## Phase 2.2 Iceberg Small-File Rewrite
+
+`iceberg_small_file_rewrite.json` adds:
+
+- `maintenance_scope`: states that this is Iceberg small-file management only; StarRocks serving
+  imports and Primary Key table maintenance are outside the artifact.
+- `scenario`: resource-profile-scaled batch count, rows per batch, checkpoint interval, low write
+  target file size, rewrite target file size, manifest merge setting, and planning repetitions.
+- `before` and `after`: Iceberg metadata metrics for `orders_current`: data-file count, median
+  file size, distinct live data-file manifest count, snapshot data/delete manifest counts,
+  manifest bytes, and timed `TableScan.planFiles()` planning latency.
+- `rewrite_data_files`: result counts from Iceberg `rewrite_data_files`, including rewritten
+  data files, added data files, target file size, and rewritten bytes.
+- `rewrite_manifests`: whether a data-manifest rewrite ran, with live data-file manifest counts
+  and raw snapshot-manifest counts before/after that maintenance step.
+- `deltas`, `checks`, and `summary`: machine-checkable proof that data-file count and manifest
+  count decreased, median file size increased, and planning latency decreased.
+- `chart`: path to the captured before/after SVG in `showcase/media/`.

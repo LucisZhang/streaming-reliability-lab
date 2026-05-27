@@ -26,6 +26,9 @@ public final class JobConfig {
   private static final long DEFAULT_CHECKPOINT_COMPLETE_FAULT_EVENT_ID = -1L;
   private static final String DEFAULT_CHECKPOINT_COMPLETE_FAULT_MARKER_PATH =
       "/tmp/p1-reliability-checkpoint-complete-fault-once.marker";
+  private static final String DEFAULT_WRITE_TARGET_FILE_SIZE_BYTES = "";
+  private static final String DEFAULT_WRITE_PARQUET_ROW_GROUP_SIZE_BYTES = "";
+  private static final String DEFAULT_COMMIT_MANIFEST_MIN_COUNT_TO_MERGE = "";
 
   private final ParameterTool parameters;
 
@@ -129,6 +132,20 @@ public final class JobConfig {
   public String checkpointCompleteFaultMarkerPath() {
     return parameters.get(
         "checkpoint-complete-fault-marker-path", DEFAULT_CHECKPOINT_COMPLETE_FAULT_MARKER_PATH);
+  }
+
+  public String writeTargetFileSizeBytes() {
+    return parameters.get("write-target-file-size-bytes", DEFAULT_WRITE_TARGET_FILE_SIZE_BYTES);
+  }
+
+  public String writeParquetRowGroupSizeBytes() {
+    return parameters.get(
+        "write-parquet-row-group-size-bytes", DEFAULT_WRITE_PARQUET_ROW_GROUP_SIZE_BYTES);
+  }
+
+  public String commitManifestMinCountToMerge() {
+    return parameters.get(
+        "commit-manifest-min-count-to-merge", DEFAULT_COMMIT_MANIFEST_MIN_COUNT_TO_MERGE);
   }
 
   public Map<String, String> icebergCatalogProperties() {

@@ -1,0 +1,15 @@
+2026-05-27T15:55:18Z checking core services
+2026-05-27T15:55:19Z resetting running jobs, MySQL source table, and Iceberg tables
+2026-05-27T15:55:28Z submitted CDC job 709f3415c0b8bc3f493600a44522e916 with short checkpoints for small-file generation
+2026-05-27T15:55:33Z baseline checkpoint 4 completed before inserts
+2026-05-27T15:55:46Z small-file batch 4/24: inserted_rows=96 checkpoint=16
+2026-05-27T15:55:59Z small-file batch 8/24: inserted_rows=192 checkpoint=29
+2026-05-27T15:56:12Z small-file batch 12/24: inserted_rows=288 checkpoint=41
+2026-05-27T15:56:25Z small-file batch 16/24: inserted_rows=384 checkpoint=53
+2026-05-27T15:56:38Z small-file batch 20/24: inserted_rows=480 checkpoint=66
+2026-05-27T15:56:51Z small-file batch 24/24: inserted_rows=576 checkpoint=78
+2026-05-27T15:56:58Z cancelled CDC job 709f3415c0b8bc3f493600a44522e916 after small files were committed
+2026-05-27T15:57:01Z before rewrite: data_files=48 manifests=24 median_file_size=2809.0 planning_ms=54.92
+2026-05-27T15:57:05Z rewrite_data_files: rewritten=48 added=2
+2026-05-27T15:57:10Z rewrite_manifests: ran=True live_before=1 live_after=1
+2026-05-27T15:57:13Z after rewrite: data_files=2 manifests=1 median_file_size=6614.5 planning_ms=44.572

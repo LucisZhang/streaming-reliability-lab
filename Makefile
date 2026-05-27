@@ -53,9 +53,8 @@ gen: ensure-env
 eo-verify: ensure-env build-flink
 	$(PYTHON) -m harness.eo_verify $(ARGS)
 
-small-file-rewrite:
-	@echo "Phase 1.1 scaffold only: small-file rewrite is introduced in a later phase."
-	@exit 2
+small-file-rewrite: ensure-env build-flink
+	$(PYTHON) -m harness.small_file_rewrite $(ARGS)
 
 ckpt-metrics:
 	@echo "Phase 1.1 scaffold only: checkpoint metrics harness is introduced in a later phase."

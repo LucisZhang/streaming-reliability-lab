@@ -37,12 +37,14 @@ public final class IcebergTables {
 
     TableIdentifier current = TableIdentifier.of(namespace, CURRENT_TABLE);
     if (!catalog.tableExists(current)) {
-      catalog.createTable(current, currentSchema(), PartitionSpec.unpartitioned(), currentProperties());
+      catalog.createTable(
+          current, currentSchema(), PartitionSpec.unpartitioned(), currentProperties(config));
     }
 
     TableIdentifier changelog = TableIdentifier.of(namespace, CHANGELOG_TABLE);
     if (!catalog.tableExists(changelog)) {
-      catalog.createTable(changelog, changelogSchema(), PartitionSpec.unpartitioned(), changelogProperties());
+      catalog.createTable(
+          changelog, changelogSchema(), PartitionSpec.unpartitioned(), changelogProperties(config));
     }
   }
 
@@ -54,11 +56,11 @@ public final class IcebergTables {
   }
 
   public static TableLoader currentTableLoader(JobConfig config) {
-    return TableLoader.fromCatalog(catalogLoader(config), currentIdentifier(config));
+    return withJdbcDriver(TableLoader.fromCatalog(catalogLoader(config), currentIdentifier(config)));
   }
 
   public static TableLoader changelogTableLoader(JobConfig config) {
-    return TableLoader.fromCatalog(catalogLoader(config), changelogIdentifier(config));
+    return withJdbcDriver(TableLoader.fromCatalog(catalogLoader(config), changelogIdentifier(config)));
   }
 
   public static TableIdentifier currentIdentifier(JobConfig config) {
@@ -115,7 +117,7 @@ public final class IcebergTables {
     return properties;
   }
 
-  private static Catalog loadCatalog(JobConfig config) {
+  static Catalog loadCatalog(JobConfig config) {
     return CatalogUtil.loadCatalog(
         "org.apache.iceberg.jdbc.JdbcCatalog",
         config.catalogName(),
@@ -123,7 +125,7 @@ public final class IcebergTables {
         new Configuration());
   }
 
-  private static Map<String, String> currentProperties() {
+  private static Map<String, String> currentProperties(JobConfig config) {
     Map<String, String> properties = new HashMap<>();
     properties.put("format-version", "2");
     properties.put("write.upsert.enabled", "true");
@@ -131,13 +133,82 @@ public final class IcebergTables {
     properties.put("write.update.mode", "merge-on-read");
     properties.put("write.merge.mode", "merge-on-read");
     properties.put("write.format.default", "parquet");
+    putIfConfigured(
+        properties, "write.target-file-size-bytes", config.writeTargetFileSizeBytes());
+    putIfConfigured(
+        properties, "write.parquet.row-group-size-bytes", config.writeParquetRowGroupSizeBytes());
+    putIfConfigured(
+        properties,
+        "commit.manifest.min-count-to-merge",
+        config.commitManifestMinCountToMerge());
     return properties;
   }
 
-  private static Map<String, String> changelogProperties() {
+  private static Map<String, String> changelogProperties(JobConfig config) {
     Map<String, String> properties = new HashMap<>();
     properties.put("format-version", "2");
     properties.put("write.format.default", "parquet");
+    putIfConfigured(
+        properties, "write.target-file-size-bytes", config.writeTargetFileSizeBytes());
+    putIfConfigured(
+        properties, "write.parquet.row-group-size-bytes", config.writeParquetRowGroupSizeBytes());
+    putIfConfigured(
+        properties,
+        "commit.manifest.min-count-to-merge",
+        config.commitManifestMinCountToMerge());
     return properties;
+  }
+
+  private static void putIfConfigured(
+      Map<String, String> properties, String propertyName, String value) {
+    if (value != null && !value.isBlank()) {
+      properties.put(propertyName, value);
+    }
+  }
+
+  private static TableLoader withJdbcDriver(TableLoader delegate) {
+    return new DriverLoadingTableLoader(delegate);
+  }
+
+  private static void loadJdbcDriver() {
+    try {
+      Class.forName("com.mysql.cj.jdbc.Driver");
+    } catch (ClassNotFoundException exc) {
+      throw new IllegalStateException("MySQL JDBC driver is required for Iceberg JDBC catalog", exc);
+    }
+  }
+
+  private static final class DriverLoadingTableLoader implements TableLoader {
+    private final TableLoader delegate;
+
+    private DriverLoadingTableLoader(TableLoader delegate) {
+      this.delegate = delegate;
+    }
+
+    @Override
+    public void open() {
+      loadJdbcDriver();
+      delegate.open();
+    }
+
+    @Override
+    public boolean isOpen() {
+      return delegate.isOpen();
+    }
+
+    @Override
+    public org.apache.iceberg.Table loadTable() {
+      return delegate.loadTable();
+    }
+
+    @Override
+    public TableLoader clone() {
+      return new DriverLoadingTableLoader(delegate.clone());
+    }
+
+    @Override
+    public void close() throws java.io.IOException {
+      delegate.close();
+    }
   }
 }

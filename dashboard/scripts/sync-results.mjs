@@ -48,6 +48,28 @@ function validateEoReconciliation(filename, artifact) {
   }
 }
 
+function validateSmallFileRewrite(filename, artifact) {
+  if (filename !== "iceberg_small_file_rewrite.json") {
+    return;
+  }
+  for (const field of ["before", "after", "rewrite_data_files", "checks", "summary"]) {
+    if (!artifact[field] || typeof artifact[field] !== "object") {
+      throw new Error(`${filename} must include ${field} as an object`);
+    }
+  }
+  const requiredChecks = [
+    "data_file_count_decreased",
+    "manifest_count_decreased",
+    "median_file_size_increased",
+    "planning_latency_decreased",
+  ];
+  for (const check of requiredChecks) {
+    if (artifact.checks[check] !== true) {
+      throw new Error(`${filename} check failed or missing: ${check}`);
+    }
+  }
+}
+
 async function readJson(filePath) {
   const raw = await readFile(filePath, "utf8");
   return JSON.parse(raw);
@@ -91,6 +113,7 @@ async function main() {
 
     validateProvenance(filename, artifact);
     validateEoReconciliation(filename, artifact);
+    validateSmallFileRewrite(filename, artifact);
 
     if (artifact.logs) {
       const logPath = path.join(rootDir, artifact.logs);
