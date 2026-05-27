@@ -1,0 +1,45 @@
+Phase 1.1 smoke transcript
+
+make doctor
+doctor ok
+  - java: openjdk version "11.0.31" 2026-04-21 [/opt/homebrew/opt/openjdk@11/bin/java]
+  - maven: Apache Maven 3.9.16 [/opt/homebrew/opt/maven/bin/mvn]
+  - python: Python 3.11.15 [/opt/homebrew/bin/python3.11]
+  - node: v20.20.2 [/opt/homebrew/opt/node@20/bin/node]
+
+make ps
+p1_reliability_lab-jobmanager-1: healthy
+p1_reliability_lab-taskmanager-1: healthy
+p1_reliability_lab-mysql-1: healthy
+p1_reliability_lab-minio-1: healthy
+
+make gen ARGS="--events 10000 --seed 1"
+generator ok events=10000 seed=1 event_id_min=1 event_id_max=10000
+
+make sql-mysql Q="SELECT COUNT(*) FROM orders"
+10000
+
+Clean database repeat:
+make down
+make up-core
+make gen ARGS="--events 10000 --seed 1"
+make sql-mysql Q="SELECT MIN(event_id), MAX(event_id), COUNT(*) FROM orders"
+1	10000	10000
+
+make sql-mysql Q="SELECT @@binlog_format, @@gtid_mode, @@binlog_row_image"
+ROW	ON	FULL
+
+make sql-mysql Q="SHOW DATABASES LIKE 'iceberg_catalog'"
+iceberg_catalog
+
+make sql-iceberg ARGS="--help"
+Run data SQL through Flink SQL batch. This is the equality-delete-correct Iceberg reader and must never be replaced with pyiceberg.
+
+make sql-iceberg-meta ARGS="--help"
+Read Iceberg metadata with pyiceberg only; this command must not materialize table data for reconciliation.
+
+make test
+2 passed in 0.01s
+
+ruff / black --check / mypy
+All checks passed; no formatting or typing issues in harness.
