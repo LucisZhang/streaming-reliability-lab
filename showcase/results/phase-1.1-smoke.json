@@ -23,7 +23,7 @@
   },
   "command": "make doctor && make up-core && make ps && make gen ARGS=\"--events 10000 --seed 1\"",
   "finished_at": "2026-05-27T09:31:00Z",
-  "git_sha": "NO_GIT_REPO",
+  "git_sha": "b5668d908a31a083358b9b80a6f96c12bfe2d4b5",
   "logs": "showcase/logs/phase-1.1-smoke.log",
   "phase": "1.1",
   "run_id": "20260527T093100Z-phase-1-1-smoke",

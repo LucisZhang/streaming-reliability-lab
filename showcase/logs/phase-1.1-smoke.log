@@ -43,3 +43,6 @@ make test
 
 ruff / black --check / mypy
 All checks passed; no formatting or typing issues in harness.
+
+Git provenance was completed after repository initialization. The verified scaffold source
+revision is b5668d908a31a083358b9b80a6f96c12bfe2d4b5.
