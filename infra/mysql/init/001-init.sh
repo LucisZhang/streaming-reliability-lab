@@ -14,6 +14,7 @@ CREATE DATABASE IF NOT EXISTS \`${catalog_db}\`;
 CREATE USER IF NOT EXISTS '${app_user}'@'%' IDENTIFIED BY '${app_password}';
 GRANT ALL PRIVILEGES ON \`${source_db}\`.* TO '${app_user}'@'%';
 GRANT ALL PRIVILEGES ON \`${catalog_db}\`.* TO '${app_user}'@'%';
+GRANT RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO '${app_user}'@'%';
 FLUSH PRIVILEGES;
 
 CREATE TABLE IF NOT EXISTS \`${source_db}\`.orders (
@@ -32,4 +33,3 @@ CREATE TABLE IF NOT EXISTS \`${source_db}\`.orders (
   KEY idx_orders_updated_at (updated_at)
 ) ENGINE=InnoDB;
 SQL
-

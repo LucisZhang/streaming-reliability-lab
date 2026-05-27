@@ -3,4 +3,6 @@ mypy==1.15.0
 pytest==8.3.5
 ruff==0.9.10
 pyiceberg==0.9.1
-
+sqlalchemy==2.0.40
+pymysql==1.1.1
+s3fs==2025.3.2

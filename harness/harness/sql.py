@@ -1,11 +1,24 @@
 from __future__ import annotations
 
 import argparse
+import json
 import subprocess
 import sys
 from collections.abc import Sequence
 
 from harness.config import Settings, load_settings
+from harness.flink import BATCH_SQL_CLASS, run_java_class
+from harness.iceberg_meta import inspect_iceberg_metadata
+
+IGNORED_OUTPUT_PREFIXES = ("WARNING:", "SLF4J:", "log4j:WARN")
+
+
+def clean_sql_output(output: str) -> str:
+    return "\n".join(
+        line
+        for line in output.splitlines()
+        if line.strip() and not line.startswith(IGNORED_OUTPUT_PREFIXES)
+    )
 
 
 def _compose_base(settings: Settings) -> list[str]:
@@ -53,8 +66,9 @@ def run_mysql_script(
 
 def run_mysql_query(query: str, *, settings: Settings | None = None) -> int:
     proc = run_mysql_script(query, settings=settings, capture=True)
-    if proc.stdout:
-        print(proc.stdout.rstrip())
+    clean_stdout = clean_sql_output(proc.stdout)
+    if clean_stdout:
+        print(clean_stdout)
     if proc.returncode != 0:
         if proc.stderr:
             print(proc.stderr.rstrip(), file=sys.stderr)
@@ -78,17 +92,15 @@ def iceberg_main(args: argparse.Namespace) -> int:
         )
         return 0
     settings = load_settings()
-    print(
-        "Flink SQL batch reader is fixed for this target, but Phase 1.1 has no Iceberg table "
-        "or connector job yet. Phase 1.2 wires query execution through the Flink SQL client.",
-        file=sys.stderr,
-    )
-    print(
-        f"Catalog={settings.iceberg_catalog_name} JDBC_DB={settings.iceberg_catalog_database} "
-        f"warehouse={settings.iceberg_warehouse}",
-        file=sys.stderr,
-    )
-    return 2
+    proc = run_java_class(BATCH_SQL_CLASS, ["--query", args.query], settings=settings)
+    clean_stdout = clean_sql_output(proc.stdout)
+    if clean_stdout:
+        print(clean_stdout)
+    if proc.returncode != 0:
+        if proc.stderr:
+            print(proc.stderr.rstrip(), file=sys.stderr)
+        return proc.returncode
+    return 0
 
 
 def iceberg_meta_main(args: argparse.Namespace) -> int:
@@ -99,21 +111,9 @@ def iceberg_meta_main(args: argparse.Namespace) -> int:
             "reconciliation on v2 upsert tables."
         )
         return 0
-    try:
-        import pyiceberg  # noqa: F401
-    except ImportError:
-        print(
-            "pyiceberg is not installed in the active Python environment. Install "
-            "harness/requirements.txt before metadata inspection.",
-            file=sys.stderr,
-        )
-        return 2
-    print(
-        "Metadata inspection is scaffolded in Phase 1.1; table-specific pyiceberg catalog "
-        "loading is added when Iceberg tables are introduced.",
-        file=sys.stderr,
-    )
-    return 2
+    metadata = inspect_iceberg_metadata(args.table)
+    print(json.dumps(metadata, indent=2, sort_keys=True))
+    return 0
 
 
 def starrocks_main(args: argparse.Namespace) -> int:

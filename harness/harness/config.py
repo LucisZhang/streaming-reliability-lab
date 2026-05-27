@@ -49,6 +49,9 @@ class Settings:
     minio_endpoint: str
     minio_docker_endpoint: str
     minio_bucket: str
+    minio_root_user: str
+    minio_root_password: str
+    minio_region: str
     flink_jobmanager_host: str
     flink_rest_port: int
     starrocks_host: str
@@ -72,6 +75,9 @@ def load_settings(env_file: Path = DEFAULT_ENV_FILE) -> Settings:
         minio_endpoint=env_value("MINIO_ENDPOINT", "http://127.0.0.1:9000", values),
         minio_docker_endpoint=env_value("MINIO_DOCKER_ENDPOINT", "http://minio:9000", values),
         minio_bucket=env_value("MINIO_BUCKET", "warehouse", values),
+        minio_root_user=env_value("MINIO_ROOT_USER", "minioadmin", values),
+        minio_root_password=env_value("MINIO_ROOT_PASSWORD", "minioadmin", values),
+        minio_region=env_value("MINIO_REGION", "us-east-1", values),
         flink_jobmanager_host=env_value("FLINK_JOBMANAGER_HOST", "127.0.0.1", values),
         flink_rest_port=int(env_value("FLINK_REST_PORT", "8081", values)),
         starrocks_host=env_value("STARROCKS_HOST", "127.0.0.1", values),

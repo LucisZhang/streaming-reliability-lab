@@ -124,6 +124,19 @@ make dashboard-preview # serve dashboard/dist locally
 Success for any Phase = its stated `make` target(s) exit 0 and produce the named artifact in
 `showcase/results/` (with provenance) when applicable.
 
+## Phase Completion Workflow
+
+- After a Phase passes its required verification target(s), create a Phase-scoped git commit
+  that includes the implementation, docs, and generated evidence artifacts for that Phase.
+  The commit message must name the Phase and summarize the verified outcome.
+- Push the Phase commit to the configured GitHub remote for the active repository and branch,
+  unless the user explicitly asks to keep it local. If the working tree contains unrelated or
+  unfinished changes, ask before including them in the Phase commit.
+- The final Phase handoff must explicitly state the verification result, produced artifacts,
+  commit hash, pushed branch, and whether anything remains uncommitted.
+- End every Phase handoff by asking the user to confirm whether Codex should proceed to the
+  next Phase.
+
 ## Resource Profiles
 
 Set `RESOURCE_PROFILE=small|default` (env, read by Makefile + harness):

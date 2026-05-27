@@ -1,0 +1,9 @@
+2026-05-27T13:37:45Z checking core services
+2026-05-27T13:37:45Z cancelling any existing Flink CDC job
+2026-05-27T13:37:47Z resetting MySQL source and Iceberg target tables
+2026-05-27T13:37:50Z submitting CDC job
+2026-05-27T13:37:56Z inserting baseline rows before controlled restart
+2026-05-27T13:38:02Z creating savepoint and restarting from it
+2026-05-27T13:38:11Z driving update events after restart
+2026-05-27T13:38:27Z driving delete event after the update snapshot is visible
+2026-05-27T13:38:27Z waiting for final source and Iceberg snapshots to match

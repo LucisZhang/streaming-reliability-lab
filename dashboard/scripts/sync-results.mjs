@@ -1,0 +1,128 @@
+import { copyFile, mkdir, readdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const dashboardDir = path.resolve(scriptDir, "..");
+const rootDir = path.resolve(dashboardDir, "..");
+const sourceDir = path.join(rootDir, "showcase", "results");
+const targetDir = path.join(dashboardDir, "public", "results");
+
+const requiredProvenanceFields = [
+  "run_id",
+  "git_sha",
+  "started_at",
+  "finished_at",
+  "stack_versions",
+  "command",
+  "logs",
+];
+
+function validateProvenance(filename, artifact) {
+  const missing = requiredProvenanceFields.filter((field) => artifact[field] === undefined);
+  if (missing.length > 0) {
+    throw new Error(`${filename} is missing required provenance fields: ${missing.join(", ")}`);
+  }
+  if (artifact.stack_versions === null || typeof artifact.stack_versions !== "object") {
+    throw new Error(`${filename} must include stack_versions as an object`);
+  }
+}
+
+function validateEoReconciliation(filename, artifact) {
+  if (filename !== "eo_reconciliation.json") {
+    return;
+  }
+  if (!Array.isArray(artifact.results) || artifact.results.length === 0) {
+    throw new Error(`${filename} must include a non-empty results array`);
+  }
+  for (const [index, result] of artifact.results.entries()) {
+    if (!result.failure_class) {
+      throw new Error(`${filename} results[${index}] is missing failure_class`);
+    }
+    if (typeof result.snapshot_diff_count !== "number") {
+      throw new Error(`${filename} results[${index}] must include numeric snapshot_diff_count`);
+    }
+    if (!result.snapshot_diff || typeof result.snapshot_diff !== "object") {
+      throw new Error(`${filename} results[${index}] is missing snapshot_diff`);
+    }
+  }
+}
+
+async function readJson(filePath) {
+  const raw = await readFile(filePath, "utf8");
+  return JSON.parse(raw);
+}
+
+async function fileExists(filePath) {
+  try {
+    await stat(filePath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function clearSyncedJson() {
+  await mkdir(targetDir, { recursive: true });
+  const existing = await readdir(targetDir);
+  await Promise.all(
+    existing
+      .filter((filename) => filename.endsWith(".json"))
+      .map((filename) => unlink(path.join(targetDir, filename))),
+  );
+}
+
+async function main() {
+  await clearSyncedJson();
+
+  const sourceFiles = (await readdir(sourceDir)).filter((filename) => filename.endsWith(".json"));
+  sourceFiles.sort((left, right) => left.localeCompare(right));
+
+  if (sourceFiles.length === 0) {
+    throw new Error("No JSON result artifacts found in showcase/results");
+  }
+
+  const artifacts = [];
+
+  for (const filename of sourceFiles) {
+    const sourcePath = path.join(sourceDir, filename);
+    const targetPath = path.join(targetDir, filename);
+    const artifact = await readJson(sourcePath);
+
+    validateProvenance(filename, artifact);
+    validateEoReconciliation(filename, artifact);
+
+    if (artifact.logs) {
+      const logPath = path.join(rootDir, artifact.logs);
+      if (!(await fileExists(logPath))) {
+        throw new Error(`${filename} references missing log file: ${artifact.logs}`);
+      }
+    }
+
+    await copyFile(sourcePath, targetPath);
+    artifacts.push({
+      filename,
+      phase: artifact.phase ?? null,
+      run_id: artifact.run_id,
+      git_sha: artifact.git_sha,
+      started_at: artifact.started_at,
+      finished_at: artifact.finished_at,
+      command: artifact.command,
+      logs: artifact.logs,
+    });
+  }
+
+  const index = {
+    generated_at: new Date().toISOString(),
+    source: "showcase/results/*.json",
+    artifacts,
+  };
+  await writeFile(path.join(targetDir, "index.json"), `${JSON.stringify(index, null, 2)}\n`);
+
+  console.log(`Synced ${artifacts.length} validated result artifact(s) to dashboard/public/results/`);
+}
+
+main().catch((error) => {
+  console.error(error.message);
+  process.exitCode = 1;
+});

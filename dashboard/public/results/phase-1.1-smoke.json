@@ -1,0 +1,43 @@
+{
+  "checks": {
+    "clean_seed_count": 10000,
+    "clean_seed_event_id_max": 10000,
+    "clean_seed_event_id_min": 1,
+    "core_services": [
+      "mysql healthy",
+      "minio healthy",
+      "flink jobmanager healthy",
+      "flink taskmanager healthy"
+    ],
+    "doctor": "passed",
+    "harness_lint": "passed",
+    "harness_tests": "2 passed",
+    "iceberg_catalog_schema": "iceberg_catalog",
+    "iceberg_data_reader": "Flink SQL batch",
+    "iceberg_metadata_reader": "pyiceberg metadata-only",
+    "mysql_binlog_format": "ROW",
+    "mysql_binlog_row_image": "FULL",
+    "mysql_count": 10000,
+    "mysql_gtid_mode": "ON",
+    "starrocks_in_core": false
+  },
+  "command": "make doctor && make up-core && make ps && make gen ARGS=\"--events 10000 --seed 1\"",
+  "finished_at": "2026-05-27T09:31:00Z",
+  "git_sha": "b5668d908a31a083358b9b80a6f96c12bfe2d4b5",
+  "logs": "showcase/logs/phase-1.1-smoke.log",
+  "phase": "1.1",
+  "run_id": "20260527T093100Z-phase-1-1-smoke",
+  "stack_versions": {
+    "flink": "1.20.4",
+    "flink_cdc": "3.6.0",
+    "iceberg": "1.10.x",
+    "java": "11",
+    "maven": "3.9",
+    "minio": "RELEASE.2025-04-22T22-12-26Z",
+    "mysql": "8.0.36",
+    "node": "20",
+    "python": "3.11",
+    "starrocks": "3.3.x (M3+)"
+  },
+  "started_at": "2026-05-27T09:21:00Z"
+}

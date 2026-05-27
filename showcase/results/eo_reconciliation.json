@@ -1,0 +1,761 @@
+{
+  "claim_boundary": "MySQL CDC -> Flink -> Iceberg",
+  "command": "make eo-verify ARGS=\"--failure task-crash,checkpoint-restore,jobmanager-restart,savepoint-restore,sink-commit-fault\"",
+  "finished_at": "2026-05-27T15:17:54Z",
+  "git_sha": "b2434d1a9e31",
+  "logs": "showcase/logs/phase-2.1-eo-verify.log",
+  "phase": "2.1",
+  "reader": "Flink SQL batch",
+  "results": [
+    {
+      "event_id_audit": {
+        "changelog_row_count_match": true,
+        "changelog_set_match": true,
+        "consistent": true,
+        "current_sets_match": true,
+        "expected_changelog_event_ids": [
+          1301,
+          1302,
+          1303,
+          1304,
+          2301,
+          2302
+        ],
+        "expected_changelog_row_count": 9,
+        "expected_current_event_ids": [
+          1303,
+          1304,
+          2302
+        ],
+        "iceberg_changelog_distinct_event_ids": [
+          1301,
+          1302,
+          1303,
+          1304,
+          2301,
+          2302
+        ],
+        "iceberg_changelog_row_count": 9,
+        "iceberg_current_event_ids": [
+          1303,
+          1304,
+          2302
+        ],
+        "source_current_event_ids": [
+          1303,
+          1304,
+          2302
+        ]
+      },
+      "failure_class": "task-crash",
+      "iceberg_rows": [
+        {
+          "amount_cents": "22222",
+          "business_key": "phase-1-3-task-crash-update",
+          "customer_id": "602",
+          "event_id": "2302",
+          "order_id": "1302",
+          "seed": "13",
+          "status": "shipped",
+          "updated_at": "2026-01-03 00:01:02.000"
+        },
+        {
+          "amount_cents": "30300",
+          "business_key": "phase-1-3-task-crash-trigger",
+          "customer_id": "603",
+          "event_id": "1303",
+          "order_id": "1303",
+          "seed": "13",
+          "status": "paid",
+          "updated_at": "2026-01-03 00:00:03.000"
+        },
+        {
+          "amount_cents": "40400",
+          "business_key": "phase-1-3-task-crash-trailing",
+          "customer_id": "604",
+          "event_id": "1304",
+          "order_id": "1304",
+          "seed": "13",
+          "status": "packed",
+          "updated_at": "2026-01-03 00:00:04.000"
+        }
+      ],
+      "iceberg_snapshot_row_count": 3,
+      "job_id": "d434fe1d81f8f27d10fb85b978ca00c9",
+      "mysql_rows": [
+        {
+          "amount_cents": "22222",
+          "business_key": "phase-1-3-task-crash-update",
+          "customer_id": "602",
+          "event_id": "2302",
+          "order_id": "1302",
+          "seed": "13",
+          "status": "shipped",
+          "updated_at": "2026-01-03 00:01:02.000"
+        },
+        {
+          "amount_cents": "30300",
+          "business_key": "phase-1-3-task-crash-trigger",
+          "customer_id": "603",
+          "event_id": "1303",
+          "order_id": "1303",
+          "seed": "13",
+          "status": "paid",
+          "updated_at": "2026-01-03 00:00:03.000"
+        },
+        {
+          "amount_cents": "40400",
+          "business_key": "phase-1-3-task-crash-trailing",
+          "customer_id": "604",
+          "event_id": "1304",
+          "order_id": "1304",
+          "seed": "13",
+          "status": "packed",
+          "updated_at": "2026-01-03 00:00:04.000"
+        }
+      ],
+      "passed": true,
+      "recovery": {
+        "marker_path": "/tmp/p1-phase-1-3-task-crash-4b60c4d5161b4fefafcb48d62ce84819.marker",
+        "mode": "automatic task restart",
+        "pre_crash_checkpoint": {
+          "alignment_buffered": 0,
+          "checkpoint_type": "CHECKPOINT",
+          "checkpointed_size": 4417,
+          "className": "completed",
+          "discarded": false,
+          "end_to_end_duration": 63,
+          "external_path": "file:/opt/flink/checkpoints/d434fe1d81f8f27d10fb85b978ca00c9/chk-6",
+          "id": 6,
+          "is_savepoint": false,
+          "latest_ack_timestamp": 1779894519609,
+          "num_acknowledged_subtasks": 9,
+          "num_subtasks": 9,
+          "persisted_data": 0,
+          "processed_data": 294,
+          "savepointFormat": null,
+          "state_size": 4417,
+          "status": "COMPLETED",
+          "tasks": {},
+          "trigger_timestamp": 1779894519546
+        }
+      },
+      "snapshot_diff": {
+        "missing_in_iceberg": [],
+        "unexpected_in_iceberg": []
+      },
+      "snapshot_diff_count": 0,
+      "source_iceberg_diff_count": 0,
+      "source_snapshot_row_count": 3,
+      "trigger": "one-shot Flink operator exception on event_id=1303"
+    },
+    {
+      "event_id_audit": {
+        "changelog_row_count_match": true,
+        "changelog_set_match": true,
+        "consistent": true,
+        "current_sets_match": true,
+        "expected_changelog_event_ids": [
+          3301,
+          3302,
+          3303,
+          3304,
+          4301,
+          4302
+        ],
+        "expected_changelog_row_count": 9,
+        "expected_current_event_ids": [
+          3303,
+          3304,
+          4302
+        ],
+        "iceberg_changelog_distinct_event_ids": [
+          3301,
+          3302,
+          3303,
+          3304,
+          4301,
+          4302
+        ],
+        "iceberg_changelog_row_count": 9,
+        "iceberg_current_event_ids": [
+          3303,
+          3304,
+          4302
+        ],
+        "source_current_event_ids": [
+          3303,
+          3304,
+          4302
+        ]
+      },
+      "failure_class": "checkpoint-restore",
+      "iceberg_rows": [
+        {
+          "amount_cents": "55500",
+          "business_key": "phase-1-3-checkpoint-update",
+          "customer_id": "702",
+          "event_id": "4302",
+          "order_id": "3302",
+          "seed": "33",
+          "status": "delivered",
+          "updated_at": "2026-01-04 00:01:02.000"
+        },
+        {
+          "amount_cents": "33300",
+          "business_key": "phase-1-3-checkpoint-carry",
+          "customer_id": "703",
+          "event_id": "3303",
+          "order_id": "3303",
+          "seed": "33",
+          "status": "packed",
+          "updated_at": "2026-01-04 00:00:03.000"
+        },
+        {
+          "amount_cents": "66600",
+          "business_key": "phase-1-3-checkpoint-post-restore",
+          "customer_id": "704",
+          "event_id": "3304",
+          "order_id": "3304",
+          "seed": "33",
+          "status": "paid",
+          "updated_at": "2026-01-04 00:01:04.000"
+        }
+      ],
+      "iceberg_snapshot_row_count": 3,
+      "job_id": "0769944e5b2dd93f36f3a7d03d562a61",
+      "mysql_rows": [
+        {
+          "amount_cents": "55500",
+          "business_key": "phase-1-3-checkpoint-update",
+          "customer_id": "702",
+          "event_id": "4302",
+          "order_id": "3302",
+          "seed": "33",
+          "status": "delivered",
+          "updated_at": "2026-01-04 00:01:02.000"
+        },
+        {
+          "amount_cents": "33300",
+          "business_key": "phase-1-3-checkpoint-carry",
+          "customer_id": "703",
+          "event_id": "3303",
+          "order_id": "3303",
+          "seed": "33",
+          "status": "packed",
+          "updated_at": "2026-01-04 00:00:03.000"
+        },
+        {
+          "amount_cents": "66600",
+          "business_key": "phase-1-3-checkpoint-post-restore",
+          "customer_id": "704",
+          "event_id": "3304",
+          "order_id": "3304",
+          "seed": "33",
+          "status": "paid",
+          "updated_at": "2026-01-04 00:01:04.000"
+        }
+      ],
+      "passed": true,
+      "recovery": {
+        "checkpoint": {
+          "external_path": "file:///opt/flink/checkpoints/0769944e5b2dd93f36f3a7d03d562a61/chk-6",
+          "id": 6,
+          "status": "RETAINED"
+        },
+        "checkpoint_before_stop": {
+          "alignment_buffered": 0,
+          "checkpoint_type": "CHECKPOINT",
+          "checkpointed_size": 4417,
+          "className": "completed",
+          "discarded": false,
+          "end_to_end_duration": 43,
+          "external_path": "file:/opt/flink/checkpoints/0769944e5b2dd93f36f3a7d03d562a61/chk-5",
+          "id": 5,
+          "is_savepoint": false,
+          "latest_ack_timestamp": 1779894604084,
+          "num_acknowledged_subtasks": 9,
+          "num_subtasks": 9,
+          "persisted_data": 0,
+          "processed_data": 294,
+          "savepointFormat": null,
+          "state_size": 4417,
+          "status": "COMPLETED",
+          "tasks": {},
+          "trigger_timestamp": 1779894604041
+        },
+        "mode": "restore from externalized checkpoint"
+      },
+      "restored_job_id": "c6cdf4cc3a83b8fb05e2cd950779c0d5",
+      "snapshot_diff": {
+        "missing_in_iceberg": [],
+        "unexpected_in_iceberg": []
+      },
+      "snapshot_diff_count": 0,
+      "source_iceberg_diff_count": 0,
+      "source_snapshot_row_count": 3,
+      "trigger": "cancel running job and restore from latest completed checkpoint"
+    },
+    {
+      "event_id_audit": {
+        "changelog_row_count_match": true,
+        "changelog_set_match": true,
+        "consistent": true,
+        "current_sets_match": true,
+        "expected_changelog_event_ids": [
+          5301,
+          5302,
+          5303,
+          5304,
+          6301,
+          6302
+        ],
+        "expected_changelog_row_count": 9,
+        "expected_current_event_ids": [
+          5303,
+          5304,
+          6302
+        ],
+        "iceberg_changelog_distinct_event_ids": [
+          5301,
+          5302,
+          5303,
+          5304,
+          6301,
+          6302
+        ],
+        "iceberg_changelog_row_count": 9,
+        "iceberg_current_event_ids": [
+          5303,
+          5304,
+          6302
+        ],
+        "source_current_event_ids": [
+          5303,
+          5304,
+          6302
+        ]
+      },
+      "failure_class": "jobmanager-restart",
+      "iceberg_rows": [
+        {
+          "amount_cents": "60500",
+          "business_key": "phase-2-1-jm-update",
+          "customer_id": "802",
+          "event_id": "6302",
+          "order_id": "5302",
+          "seed": "53",
+          "status": "delivered",
+          "updated_at": "2026-01-05 00:01:02.000"
+        },
+        {
+          "amount_cents": "36300",
+          "business_key": "phase-2-1-jm-carry",
+          "customer_id": "803",
+          "event_id": "5303",
+          "order_id": "5303",
+          "seed": "53",
+          "status": "packed",
+          "updated_at": "2026-01-05 00:00:03.000"
+        },
+        {
+          "amount_cents": "72600",
+          "business_key": "phase-2-1-jm-post-restart",
+          "customer_id": "804",
+          "event_id": "5304",
+          "order_id": "5304",
+          "seed": "53",
+          "status": "paid",
+          "updated_at": "2026-01-05 00:01:04.000"
+        }
+      ],
+      "iceberg_snapshot_row_count": 3,
+      "job_id": "0d5ef97a6af890188267e5eab681a535",
+      "mysql_rows": [
+        {
+          "amount_cents": "60500",
+          "business_key": "phase-2-1-jm-update",
+          "customer_id": "802",
+          "event_id": "6302",
+          "order_id": "5302",
+          "seed": "53",
+          "status": "delivered",
+          "updated_at": "2026-01-05 00:01:02.000"
+        },
+        {
+          "amount_cents": "36300",
+          "business_key": "phase-2-1-jm-carry",
+          "customer_id": "803",
+          "event_id": "5303",
+          "order_id": "5303",
+          "seed": "53",
+          "status": "packed",
+          "updated_at": "2026-01-05 00:00:03.000"
+        },
+        {
+          "amount_cents": "72600",
+          "business_key": "phase-2-1-jm-post-restart",
+          "customer_id": "804",
+          "event_id": "5304",
+          "order_id": "5304",
+          "seed": "53",
+          "status": "paid",
+          "updated_at": "2026-01-05 00:01:04.000"
+        }
+      ],
+      "passed": true,
+      "recovery": {
+        "checkpoint_before_restart": {
+          "alignment_buffered": 0,
+          "checkpoint_type": "CHECKPOINT",
+          "checkpointed_size": 4417,
+          "className": "completed",
+          "discarded": false,
+          "end_to_end_duration": 57,
+          "external_path": "file:/opt/flink/checkpoints/0d5ef97a6af890188267e5eab681a535/chk-7",
+          "id": 7,
+          "is_savepoint": false,
+          "latest_ack_timestamp": 1779894719261,
+          "num_acknowledged_subtasks": 9,
+          "num_subtasks": 9,
+          "persisted_data": 0,
+          "processed_data": 147,
+          "savepointFormat": null,
+          "state_size": 4417,
+          "status": "COMPLETED",
+          "tasks": {},
+          "trigger_timestamp": 1779894719204
+        },
+        "checkpoint_path_used": "file:///opt/flink/checkpoints/0d5ef97a6af890188267e5eab681a535/chk-7",
+        "mode": "restore from latest checkpoint after JobManager container restart",
+        "taskmanager_recovery": "docker compose up -d taskmanager after JobManager restart"
+      },
+      "restored_job_id": "6d2b471d567b56fe5211105861a7de73",
+      "snapshot_diff": {
+        "missing_in_iceberg": [],
+        "unexpected_in_iceberg": []
+      },
+      "snapshot_diff_count": 0,
+      "source_iceberg_diff_count": 0,
+      "source_snapshot_row_count": 3,
+      "trigger": "restart the Flink JobManager container after a completed checkpoint"
+    },
+    {
+      "event_id_audit": {
+        "changelog_row_count_match": true,
+        "changelog_set_match": true,
+        "consistent": true,
+        "current_sets_match": true,
+        "expected_changelog_event_ids": [
+          7301,
+          7302,
+          7303,
+          7304,
+          8301,
+          8302
+        ],
+        "expected_changelog_row_count": 9,
+        "expected_current_event_ids": [
+          7303,
+          7304,
+          8302
+        ],
+        "iceberg_changelog_distinct_event_ids": [
+          7301,
+          7302,
+          7303,
+          7304,
+          8301,
+          8302
+        ],
+        "iceberg_changelog_row_count": 9,
+        "iceberg_current_event_ids": [
+          7303,
+          7304,
+          8302
+        ],
+        "source_current_event_ids": [
+          7303,
+          7304,
+          8302
+        ]
+      },
+      "failure_class": "savepoint-restore",
+      "iceberg_rows": [
+        {
+          "amount_cents": "65500",
+          "business_key": "phase-2-1-savepoint-update",
+          "customer_id": "902",
+          "event_id": "8302",
+          "order_id": "7302",
+          "seed": "73",
+          "status": "delivered",
+          "updated_at": "2026-01-06 00:01:02.000"
+        },
+        {
+          "amount_cents": "39300",
+          "business_key": "phase-2-1-savepoint-carry",
+          "customer_id": "903",
+          "event_id": "7303",
+          "order_id": "7303",
+          "seed": "73",
+          "status": "packed",
+          "updated_at": "2026-01-06 00:00:03.000"
+        },
+        {
+          "amount_cents": "78600",
+          "business_key": "phase-2-1-savepoint-post-restore",
+          "customer_id": "904",
+          "event_id": "7304",
+          "order_id": "7304",
+          "seed": "73",
+          "status": "paid",
+          "updated_at": "2026-01-06 00:01:04.000"
+        }
+      ],
+      "iceberg_snapshot_row_count": 3,
+      "job_id": "4838f8c175f327962bd3366a35cf140d",
+      "mysql_rows": [
+        {
+          "amount_cents": "65500",
+          "business_key": "phase-2-1-savepoint-update",
+          "customer_id": "902",
+          "event_id": "8302",
+          "order_id": "7302",
+          "seed": "73",
+          "status": "delivered",
+          "updated_at": "2026-01-06 00:01:02.000"
+        },
+        {
+          "amount_cents": "39300",
+          "business_key": "phase-2-1-savepoint-carry",
+          "customer_id": "903",
+          "event_id": "7303",
+          "order_id": "7303",
+          "seed": "73",
+          "status": "packed",
+          "updated_at": "2026-01-06 00:00:03.000"
+        },
+        {
+          "amount_cents": "78600",
+          "business_key": "phase-2-1-savepoint-post-restore",
+          "customer_id": "904",
+          "event_id": "7304",
+          "order_id": "7304",
+          "seed": "73",
+          "status": "paid",
+          "updated_at": "2026-01-06 00:01:04.000"
+        }
+      ],
+      "passed": true,
+      "recovery": {
+        "checkpoint_before_savepoint": {
+          "alignment_buffered": 0,
+          "checkpoint_type": "CHECKPOINT",
+          "checkpointed_size": 4417,
+          "className": "completed",
+          "discarded": false,
+          "end_to_end_duration": 41,
+          "external_path": "file:/opt/flink/checkpoints/4838f8c175f327962bd3366a35cf140d/chk-6",
+          "id": 6,
+          "is_savepoint": false,
+          "latest_ack_timestamp": 1779894858684,
+          "num_acknowledged_subtasks": 9,
+          "num_subtasks": 9,
+          "persisted_data": 0,
+          "processed_data": 294,
+          "savepointFormat": null,
+          "state_size": 4417,
+          "status": "COMPLETED",
+          "tasks": {},
+          "trigger_timestamp": 1779894858643
+        },
+        "mode": "restore from explicit Flink savepoint",
+        "savepoint": "file:/opt/flink/savepoints/savepoint-4838f8-e7a91c2a50d2"
+      },
+      "restored_job_id": "2fb90d4411d257d8548bc2c34e1a0dda",
+      "snapshot_diff": {
+        "missing_in_iceberg": [],
+        "unexpected_in_iceberg": []
+      },
+      "snapshot_diff_count": 0,
+      "source_iceberg_diff_count": 0,
+      "source_snapshot_row_count": 3,
+      "trigger": "create a Flink savepoint, cancel the job, and restore from that savepoint"
+    },
+    {
+      "event_id_audit": {
+        "changelog_row_count_match": true,
+        "changelog_set_match": true,
+        "consistent": true,
+        "current_sets_match": true,
+        "expected_changelog_event_ids": [
+          9301,
+          9302,
+          9303,
+          9304,
+          10301,
+          10302
+        ],
+        "expected_changelog_row_count": 9,
+        "expected_current_event_ids": [
+          9303,
+          9304,
+          10302
+        ],
+        "iceberg_changelog_distinct_event_ids": [
+          9301,
+          9302,
+          9303,
+          9304,
+          10301,
+          10302
+        ],
+        "iceberg_changelog_row_count": 9,
+        "iceberg_current_event_ids": [
+          9303,
+          9304,
+          10302
+        ],
+        "source_current_event_ids": [
+          9303,
+          9304,
+          10302
+        ]
+      },
+      "failure_class": "sink-commit-fault",
+      "fault_injection": {
+        "marker_path": "/tmp/p1-phase-2-1-sink-commit-abd5a4f5ede24eafa73ec1b053d1c7bf.marker",
+        "marker_text": "fault=checkpoint-complete\ntrigger_event_id=9303\ncheckpoint_id=7",
+        "mechanism": "The job flag --checkpoint-complete-fault-event-id inserts a test-only operator immediately upstream of the Iceberg sinks. After the trigger event is observed, the operator throws once from CheckpointListener.notifyCheckpointComplete; Iceberg sink commits are driven by the same checkpoint-complete phase.",
+        "trigger_event_id": 9303
+      },
+      "iceberg_rows": [
+        {
+          "amount_cents": "70600",
+          "business_key": "phase-2-1-commit-update",
+          "customer_id": "1002",
+          "event_id": "10302",
+          "order_id": "9302",
+          "seed": "93",
+          "status": "delivered",
+          "updated_at": "2026-01-07 00:01:02.000"
+        },
+        {
+          "amount_cents": "42300",
+          "business_key": "phase-2-1-commit-trigger",
+          "customer_id": "1003",
+          "event_id": "9303",
+          "order_id": "9303",
+          "seed": "93",
+          "status": "paid",
+          "updated_at": "2026-01-07 00:00:03.000"
+        },
+        {
+          "amount_cents": "56400",
+          "business_key": "phase-2-1-commit-trailing",
+          "customer_id": "1004",
+          "event_id": "9304",
+          "order_id": "9304",
+          "seed": "93",
+          "status": "packed",
+          "updated_at": "2026-01-07 00:00:04.000"
+        }
+      ],
+      "iceberg_snapshot_row_count": 3,
+      "job_id": "c5204863b42a291725de28d104f038c9",
+      "mysql_rows": [
+        {
+          "amount_cents": "70600",
+          "business_key": "phase-2-1-commit-update",
+          "customer_id": "1002",
+          "event_id": "10302",
+          "order_id": "9302",
+          "seed": "93",
+          "status": "delivered",
+          "updated_at": "2026-01-07 00:01:02.000"
+        },
+        {
+          "amount_cents": "42300",
+          "business_key": "phase-2-1-commit-trigger",
+          "customer_id": "1003",
+          "event_id": "9303",
+          "order_id": "9303",
+          "seed": "93",
+          "status": "paid",
+          "updated_at": "2026-01-07 00:00:03.000"
+        },
+        {
+          "amount_cents": "56400",
+          "business_key": "phase-2-1-commit-trailing",
+          "customer_id": "1004",
+          "event_id": "9304",
+          "order_id": "9304",
+          "seed": "93",
+          "status": "packed",
+          "updated_at": "2026-01-07 00:00:04.000"
+        }
+      ],
+      "passed": true,
+      "recovery": {
+        "mode": "automatic task restart after checkpoint-complete callback failure",
+        "pre_fault_checkpoint": {
+          "alignment_buffered": 0,
+          "checkpoint_type": "CHECKPOINT",
+          "checkpointed_size": 4370,
+          "className": "completed",
+          "discarded": false,
+          "end_to_end_duration": 94,
+          "external_path": "file:/opt/flink/checkpoints/c5204863b42a291725de28d104f038c9/chk-6",
+          "id": 6,
+          "is_savepoint": false,
+          "latest_ack_timestamp": 1779894977150,
+          "num_acknowledged_subtasks": 9,
+          "num_subtasks": 9,
+          "persisted_data": 0,
+          "processed_data": 294,
+          "savepointFormat": null,
+          "state_size": 4370,
+          "status": "COMPLETED",
+          "tasks": {},
+          "trigger_timestamp": 1779894977056
+        }
+      },
+      "snapshot_diff": {
+        "missing_in_iceberg": [],
+        "unexpected_in_iceberg": []
+      },
+      "snapshot_diff_count": 0,
+      "source_iceberg_diff_count": 0,
+      "source_snapshot_row_count": 3,
+      "trigger": "test-only checkpoint-complete fault after event_id=9303"
+    }
+  ],
+  "run_id": "20260527T151754Z-ef73a5a5",
+  "stack_versions": {
+    "flink": "1.20.4",
+    "flink_cdc": "3.6.0",
+    "iceberg": "1.10.x",
+    "java": "11",
+    "maven": "3.9",
+    "minio": "RELEASE.2025-04-22T22-12-26Z",
+    "mysql": "8.0.36",
+    "node": "20",
+    "python": "3.11",
+    "starrocks": "3.3.x (M3+)"
+  },
+  "started_at": "2026-05-27T15:08:11Z",
+  "summary": {
+    "all_event_id_audits_consistent": true,
+    "all_snapshot_diffs_zero": true,
+    "errors": [],
+    "failure_classes": [
+      "task-crash",
+      "checkpoint-restore",
+      "jobmanager-restart",
+      "savepoint-restore",
+      "sink-commit-fault"
+    ],
+    "passed": true
+  }
+}

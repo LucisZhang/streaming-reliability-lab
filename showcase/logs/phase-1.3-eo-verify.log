@@ -1,0 +1,15 @@
+2026-05-27T14:13:42Z checking core services
+2026-05-27T14:13:42Z task-crash: starting deterministic scenario
+2026-05-27T14:13:42Z resetting running jobs, MySQL source table, and Iceberg target tables
+2026-05-27T14:13:53Z task-crash: submitted job 02984c321fbe1c4ac3166c203664fffd with one-shot crash marker /tmp/p1-phase-1-3-task-crash-bedea407797e48e1b8a05f39623d221a.marker
+2026-05-27T14:14:04Z task-crash: baseline committed before crash at checkpoint 4
+2026-05-27T14:14:04Z task-crash: controlled task exception observed; waiting for automatic recovery
+2026-05-27T14:14:58Z task-crash: snapshot_diff_count=0 event_id_audit_consistent=True
+2026-05-27T14:14:59Z cancelling running Flink job 02984c321fbe1c4ac3166c203664fffd
+2026-05-27T14:15:00Z checkpoint-restore: starting deterministic scenario
+2026-05-27T14:15:00Z resetting running jobs, MySQL source table, and Iceberg target tables
+2026-05-27T14:15:13Z checkpoint-restore: submitted job 72e23d19d5a02ffccfbcc6bb3eff7354
+2026-05-27T14:15:27Z checkpoint-restore: stopping job 72e23d19d5a02ffccfbcc6bb3eff7354 after checkpoint 5
+2026-05-27T14:15:34Z checkpoint-restore: restored job 844a8099db3e014b5013c85491794222 from file:///opt/flink/checkpoints/72e23d19d5a02ffccfbcc6bb3eff7354/chk-5
+2026-05-27T14:16:33Z checkpoint-restore: snapshot_diff_count=0 event_id_audit_consistent=True
+2026-05-27T14:16:34Z cancelling running Flink job 844a8099db3e014b5013c85491794222
