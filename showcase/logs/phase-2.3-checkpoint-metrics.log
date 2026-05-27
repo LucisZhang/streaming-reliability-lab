@@ -1,0 +1,14 @@
+2026-05-27T23:29:38Z checking core services
+2026-05-27T23:29:39Z resetting running jobs, MySQL source table, and Iceberg tables
+2026-05-27T23:29:50Z submitted CDC job 469237c073b0c1ea872fc0403694fc68 with sleep gates main=40ms alignment_probe=120ms
+2026-05-27T23:29:52Z baseline checkpoint 3 completed before input spike
+2026-05-27T23:29:58Z sample 0 phase=baseline checkpoint=3 duration_ms=55.0 alignment_ms=5.008125 backpressure=1.0 lag_events=0
+2026-05-27T23:30:07Z sample 1 phase=baseline checkpoint=13 duration_ms=44.0 alignment_ms=0.144125 backpressure=0.0 lag_events=0
+2026-05-27T23:30:17Z sample 2 phase=baseline checkpoint=21 duration_ms=40.0 alignment_ms=0.219709 backpressure=0.0 lag_events=0
+2026-05-27T23:30:18Z inserted input spike events=320 event_id_range=230001-230320
+2026-05-27T23:30:24Z sample 3 phase=backpressure checkpoint=27 duration_ms=53.0 alignment_ms=193.4965 backpressure=0.0 lag_events=320
+2026-05-27T23:30:38Z sample 4 phase=backpressure checkpoint=27 duration_ms=53.0 alignment_ms=9925.177338 backpressure=0.14 lag_events=320
+2026-05-27T23:30:51Z sample 5 phase=backpressure checkpoint=28 duration_ms=19022.0 alignment_ms=3772.233418 backpressure=0.397 lag_events=160
+2026-05-27T23:31:04Z sample 6 phase=recovery checkpoint=28 duration_ms=19022.0 alignment_ms=16882.2503 backpressure=0.498 lag_events=0
+2026-05-27T23:31:19Z sample 7 phase=recovery checkpoint=39 duration_ms=54.0 alignment_ms=0.041667 backpressure=0.649 lag_events=0
+2026-05-27T23:31:35Z sample 8 phase=recovery checkpoint=52 duration_ms=43.0 alignment_ms=0.005792 backpressure=0.601 lag_events=0

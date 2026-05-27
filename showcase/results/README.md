@@ -80,3 +80,24 @@ results directory with the same files and `index.json` manifest.
 - `deltas`, `checks`, and `summary`: machine-checkable proof that data-file count and manifest
   count decreased, median file size increased, and planning latency decreased.
 - `chart`: path to the captured before/after SVG in `showcase/media/`.
+
+## Phase 2.3 Checkpoint Metrics Under Load
+
+`checkpoint_metrics.json` adds:
+
+- `reader`: states that Flink checkpoint and backpressure metrics come from the real Prometheus
+  metrics reporter, while Iceberg commit lag is read with Flink SQL batch.
+- `scenario`: resource-profile-scaled input spike size, checkpoint interval, test-only sleep
+  gates, sampling cadence, timeout, and minimum backpressure threshold.
+- `metric_names`: documents the Prometheus metric patterns and REST fallback fields used for
+  checkpoint duration, alignment time, checkpoint failure count, backpressure indicator, and
+  Iceberg commit lag.
+- `time_series`: ordered samples with `checkpoint`, `backpressure`, and
+  `iceberg_commit_lag` sections. Each sample records checkpoint duration, alignment time,
+  checkpoint failure count, backpressure indicator, source progress, Iceberg changelog progress,
+  event-count lag, and max-event-id gap.
+- `checkpoint_records`: deduplicated completed-checkpoint records from the Flink REST checkpoint
+  detail endpoint.
+- `summary`: baseline-vs-load maxima and checks proving checkpoint duration/alignment rose,
+  backpressure was observed, lag appeared during the spike, and lag recovered to zero.
+- `chart`: path to the captured Phase 2.3 SVG in `showcase/media/`.

@@ -1,0 +1,572 @@
+{
+  "artifact": "Checkpoint and backpressure metrics under induced load",
+  "chart": "showcase/media/phase-2.3-checkpoint-metrics.svg",
+  "checkpoint_records": [
+    {
+      "alignment_buffered_bytes": 0.0,
+      "alignment_time_ms": null,
+      "checkpointed_size_bytes": 4370.0,
+      "duration_ms": 47.0,
+      "id": 3,
+      "latest_ack_timestamp": 1779924591544,
+      "persisted_data_bytes": 0.0,
+      "processed_data_bytes": 0.0,
+      "start_delay_ms": null,
+      "status": "COMPLETED",
+      "trigger_timestamp": 1779924591497
+    },
+    {
+      "alignment_buffered_bytes": 0.0,
+      "alignment_time_ms": null,
+      "checkpointed_size_bytes": 4370.0,
+      "duration_ms": 42.0,
+      "id": 13,
+      "latest_ack_timestamp": 1779924602097,
+      "persisted_data_bytes": 0.0,
+      "processed_data_bytes": 294.0,
+      "start_delay_ms": null,
+      "status": "COMPLETED",
+      "trigger_timestamp": 1779924602055
+    },
+    {
+      "alignment_buffered_bytes": 0.0,
+      "alignment_time_ms": null,
+      "checkpointed_size_bytes": 4370.0,
+      "duration_ms": 40.0,
+      "id": 21,
+      "latest_ack_timestamp": 1779924611008,
+      "persisted_data_bytes": 0.0,
+      "processed_data_bytes": 147.0,
+      "start_delay_ms": null,
+      "status": "COMPLETED",
+      "trigger_timestamp": 1779924610968
+    },
+    {
+      "alignment_buffered_bytes": 0.0,
+      "alignment_time_ms": null,
+      "checkpointed_size_bytes": 4370.0,
+      "duration_ms": 53.0,
+      "id": 27,
+      "latest_ack_timestamp": 1779924617331,
+      "persisted_data_bytes": 0.0,
+      "processed_data_bytes": 147.0,
+      "start_delay_ms": null,
+      "status": "COMPLETED",
+      "trigger_timestamp": 1779924617278
+    },
+    {
+      "alignment_buffered_bytes": 0.0,
+      "alignment_time_ms": null,
+      "checkpointed_size_bytes": 12316.0,
+      "duration_ms": 19022.0,
+      "id": 28,
+      "latest_ack_timestamp": 1779924637355,
+      "persisted_data_bytes": 0.0,
+      "processed_data_bytes": 22248.0,
+      "start_delay_ms": null,
+      "status": "COMPLETED",
+      "trigger_timestamp": 1779924618333
+    },
+    {
+      "alignment_buffered_bytes": 0.0,
+      "alignment_time_ms": null,
+      "checkpointed_size_bytes": 4417.0,
+      "duration_ms": 54.0,
+      "id": 39,
+      "latest_ack_timestamp": 1779924667492,
+      "persisted_data_bytes": 0.0,
+      "processed_data_bytes": 147.0,
+      "start_delay_ms": null,
+      "status": "COMPLETED",
+      "trigger_timestamp": 1779924667438
+    },
+    {
+      "alignment_buffered_bytes": 0.0,
+      "alignment_time_ms": null,
+      "checkpointed_size_bytes": 4417.0,
+      "duration_ms": 26.0,
+      "id": 52,
+      "latest_ack_timestamp": 1779924682523,
+      "persisted_data_bytes": 0.0,
+      "processed_data_bytes": 0.0,
+      "start_delay_ms": null,
+      "status": "COMPLETED",
+      "trigger_timestamp": 1779924682497
+    }
+  ],
+  "command": "make ckpt-metrics",
+  "finished_at": "2026-05-27T23:31:35Z",
+  "git_sha": "ce084a517395",
+  "induction": {
+    "job_args": {
+      "alignment_probe_sleep_ms": 120,
+      "backpressure_sleep_ms": 40
+    },
+    "mechanism": "A deterministic MySQL input spike is processed by test-only Flink sleep operators in the CDC job; metrics are scraped from the real Prometheus reporter endpoints on JobManager and TaskManager."
+  },
+  "job_id": "469237c073b0c1ea872fc0403694fc68",
+  "logs": "showcase/logs/phase-2.3-checkpoint-metrics.log",
+  "metric_names": {
+    "backpressure_indicator": {
+      "prometheus_patterns": [
+        "*backPressuredTimeMsPerSecond / 1000",
+        "*isBackPressured",
+        "*busyTimeMsPerSecond / 1000 when explicit backpressured time is zero"
+      ]
+    },
+    "checkpoint_alignment_time_ms": {
+      "prometheus_patterns": [
+        "*lastCheckpointAlignmentDuration",
+        "*checkpointAlignmentTime / 1000000",
+        "*alignmentDuration"
+      ],
+      "rest_field": "checkpoints.details.tasks.*.subtasks.*.alignment.duration"
+    },
+    "checkpoint_duration_ms": {
+      "prometheus_pattern": "*lastCheckpointDuration",
+      "rest_field": "checkpoints.latest.completed.end_to_end_duration"
+    },
+    "checkpoint_failure_count": {
+      "prometheus_pattern": "*numberOfFailedCheckpoints",
+      "rest_field": "checkpoints.counts.failed"
+    },
+    "iceberg_commit_lag_events": {
+      "iceberg_reader": "Flink SQL batch",
+      "source": "COUNT(*) from MySQL orders minus COUNT(*) from Iceberg changelog; max_event_id_gap is also recorded"
+    }
+  },
+  "phase": "2.3",
+  "reader": "Flink Prometheus metrics reporter plus Flink SQL batch for Iceberg lag",
+  "resource_profile": "small",
+  "run_id": "20260527T233135Z-0b65b846",
+  "scenario": {
+    "alignment_probe_sleep_ms": 120,
+    "backpressure_sleep_ms": 40,
+    "baseline_samples": 3,
+    "checkpoint_interval_ms": 1000,
+    "insert_batch_size": 80,
+    "max_samples_after_spike": 24,
+    "min_backpressure_indicator": 0.05,
+    "poll_interval_seconds": 3.0,
+    "spike_events": 320,
+    "timeout_seconds": 420
+  },
+  "stack_versions": {
+    "flink": "1.20.4",
+    "flink_cdc": "3.6.0",
+    "iceberg": "1.10.x",
+    "java": "11",
+    "maven": "3.9",
+    "minio": "RELEASE.2025-04-22T22-12-26Z",
+    "mysql": "8.0.36",
+    "node": "20",
+    "python": "3.11",
+    "starrocks": "3.3.x (M3+)"
+  },
+  "started_at": "2026-05-27T23:29:38Z",
+  "summary": {
+    "baseline": {
+      "max_alignment_time_ms": 5.008125,
+      "max_checkpoint_duration_ms": 55.0
+    },
+    "checks": {
+      "alignment_time_rose": true,
+      "backpressure_observed": true,
+      "checkpoint_duration_rose": true,
+      "checkpoint_failure_count_recorded": true,
+      "iceberg_commit_lag_observed": true,
+      "lag_recovered": true
+    },
+    "final": {
+      "checkpoint_failure_count": 1.0,
+      "iceberg_commit_lag_events": 0.0
+    },
+    "passed": true,
+    "under_backpressure": {
+      "max_alignment_time_ms": 16882.2503,
+      "max_backpressure_indicator": 0.649,
+      "max_checkpoint_duration_ms": 19022.0,
+      "max_iceberg_commit_lag_events": 320.0
+    }
+  },
+  "time_series": [
+    {
+      "backpressure": {
+        "backpressured_time_ms_per_second": 0.0,
+        "busy_time_ms_per_second": 1000.0,
+        "indicator": 1.0,
+        "is_backpressured": 0.0,
+        "metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond"
+        }
+      },
+      "checkpoint": {
+        "alignment_buffered_bytes": 0.0,
+        "alignment_time_ms": 5.008125,
+        "duration_ms": 55.0,
+        "failed_count": 1.0,
+        "latest_completed_id": 3,
+        "reporter_metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond",
+          "checkpoint_alignment_buffered_bytes": "",
+          "checkpoint_alignment_time_ms": "flink_taskmanager_job_task_checkpointAlignmentTime",
+          "checkpoint_duration_ms": "flink_jobmanager_job_lastCheckpointDuration",
+          "checkpoint_failed_count": "flink_jobmanager_job_numberOfFailedCheckpoints"
+        },
+        "start_delay_ms": null
+      },
+      "collected_at": "2026-05-27T23:29:58Z",
+      "elapsed_ms": 6131,
+      "iceberg_commit_lag": {
+        "iceberg_changelog_rows": 0,
+        "iceberg_max_event_id": 0,
+        "lag_events": 0,
+        "max_event_id_gap": 0,
+        "source_max_event_id": 0,
+        "source_rows": 0
+      },
+      "phase": "baseline",
+      "sample_index": 0
+    },
+    {
+      "backpressure": {
+        "backpressured_time_ms_per_second": 0.0,
+        "busy_time_ms_per_second": 0.0,
+        "indicator": 0.0,
+        "is_backpressured": 0.0,
+        "metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond"
+        }
+      },
+      "checkpoint": {
+        "alignment_buffered_bytes": 0.0,
+        "alignment_time_ms": 0.144125,
+        "duration_ms": 44.0,
+        "failed_count": 1.0,
+        "latest_completed_id": 13,
+        "reporter_metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond",
+          "checkpoint_alignment_buffered_bytes": "",
+          "checkpoint_alignment_time_ms": "flink_taskmanager_job_task_checkpointAlignmentTime",
+          "checkpoint_duration_ms": "flink_jobmanager_job_lastCheckpointDuration",
+          "checkpoint_failed_count": "flink_jobmanager_job_numberOfFailedCheckpoints"
+        },
+        "start_delay_ms": null
+      },
+      "collected_at": "2026-05-27T23:30:07Z",
+      "elapsed_ms": 15317,
+      "iceberg_commit_lag": {
+        "iceberg_changelog_rows": 0,
+        "iceberg_max_event_id": 0,
+        "lag_events": 0,
+        "max_event_id_gap": 0,
+        "source_max_event_id": 0,
+        "source_rows": 0
+      },
+      "phase": "baseline",
+      "sample_index": 1
+    },
+    {
+      "backpressure": {
+        "backpressured_time_ms_per_second": 0.0,
+        "busy_time_ms_per_second": 0.0,
+        "indicator": 0.0,
+        "is_backpressured": 0.0,
+        "metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond"
+        }
+      },
+      "checkpoint": {
+        "alignment_buffered_bytes": 0.0,
+        "alignment_time_ms": 0.219709,
+        "duration_ms": 40.0,
+        "failed_count": 1.0,
+        "latest_completed_id": 21,
+        "reporter_metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond",
+          "checkpoint_alignment_buffered_bytes": "",
+          "checkpoint_alignment_time_ms": "flink_taskmanager_job_task_checkpointAlignmentTime",
+          "checkpoint_duration_ms": "flink_jobmanager_job_lastCheckpointDuration",
+          "checkpoint_failed_count": "flink_jobmanager_job_numberOfFailedCheckpoints"
+        },
+        "start_delay_ms": null
+      },
+      "collected_at": "2026-05-27T23:30:17Z",
+      "elapsed_ms": 24888,
+      "iceberg_commit_lag": {
+        "iceberg_changelog_rows": 0,
+        "iceberg_max_event_id": 0,
+        "lag_events": 0,
+        "max_event_id_gap": 0,
+        "source_max_event_id": 0,
+        "source_rows": 0
+      },
+      "phase": "baseline",
+      "sample_index": 2
+    },
+    {
+      "backpressure": {
+        "backpressured_time_ms_per_second": 0.0,
+        "busy_time_ms_per_second": 0.0,
+        "indicator": 0.0,
+        "is_backpressured": 0.0,
+        "metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond"
+        }
+      },
+      "checkpoint": {
+        "alignment_buffered_bytes": 0.0,
+        "alignment_time_ms": 193.4965,
+        "duration_ms": 53.0,
+        "failed_count": 1.0,
+        "latest_completed_id": 27,
+        "reporter_metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond",
+          "checkpoint_alignment_buffered_bytes": "",
+          "checkpoint_alignment_time_ms": "flink_taskmanager_job_task_checkpointAlignmentTime",
+          "checkpoint_duration_ms": "flink_jobmanager_job_lastCheckpointDuration",
+          "checkpoint_failed_count": "flink_jobmanager_job_numberOfFailedCheckpoints"
+        },
+        "start_delay_ms": null
+      },
+      "collected_at": "2026-05-27T23:30:24Z",
+      "elapsed_ms": 32194,
+      "iceberg_commit_lag": {
+        "iceberg_changelog_rows": 0,
+        "iceberg_max_event_id": 0,
+        "lag_events": 320,
+        "max_event_id_gap": 230320,
+        "source_max_event_id": 230320,
+        "source_rows": 320
+      },
+      "phase": "backpressure",
+      "sample_index": 3
+    },
+    {
+      "backpressure": {
+        "backpressured_time_ms_per_second": 0.0,
+        "busy_time_ms_per_second": 140.0,
+        "indicator": 0.14,
+        "is_backpressured": 0.0,
+        "metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond"
+        }
+      },
+      "checkpoint": {
+        "alignment_buffered_bytes": 0.0,
+        "alignment_time_ms": 9925.177338,
+        "duration_ms": 53.0,
+        "failed_count": 1.0,
+        "latest_completed_id": 27,
+        "reporter_metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond",
+          "checkpoint_alignment_buffered_bytes": "",
+          "checkpoint_alignment_time_ms": "flink_taskmanager_job_task_checkpointAlignmentTime",
+          "checkpoint_duration_ms": "flink_jobmanager_job_lastCheckpointDuration",
+          "checkpoint_failed_count": "flink_jobmanager_job_numberOfFailedCheckpoints"
+        },
+        "start_delay_ms": null
+      },
+      "collected_at": "2026-05-27T23:30:38Z",
+      "elapsed_ms": 46250,
+      "iceberg_commit_lag": {
+        "iceberg_changelog_rows": 0,
+        "iceberg_max_event_id": 0,
+        "lag_events": 320,
+        "max_event_id_gap": 230320,
+        "source_max_event_id": 230320,
+        "source_rows": 320
+      },
+      "phase": "backpressure",
+      "sample_index": 4
+    },
+    {
+      "backpressure": {
+        "backpressured_time_ms_per_second": 0.0,
+        "busy_time_ms_per_second": 397.0,
+        "indicator": 0.397,
+        "is_backpressured": 0.0,
+        "metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond"
+        }
+      },
+      "checkpoint": {
+        "alignment_buffered_bytes": 0.0,
+        "alignment_time_ms": 3772.233418,
+        "duration_ms": 19022.0,
+        "failed_count": 1.0,
+        "latest_completed_id": 28,
+        "reporter_metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond",
+          "checkpoint_alignment_buffered_bytes": "",
+          "checkpoint_alignment_time_ms": "flink_taskmanager_job_task_checkpointAlignmentTime",
+          "checkpoint_duration_ms": "flink_jobmanager_job_lastCheckpointDuration",
+          "checkpoint_failed_count": "flink_jobmanager_job_numberOfFailedCheckpoints"
+        },
+        "start_delay_ms": null
+      },
+      "collected_at": "2026-05-27T23:30:51Z",
+      "elapsed_ms": 59349,
+      "iceberg_commit_lag": {
+        "iceberg_changelog_rows": 160,
+        "iceberg_max_event_id": 230160,
+        "lag_events": 160,
+        "max_event_id_gap": 160,
+        "source_max_event_id": 230320,
+        "source_rows": 320
+      },
+      "phase": "backpressure",
+      "sample_index": 5
+    },
+    {
+      "backpressure": {
+        "backpressured_time_ms_per_second": 0.0,
+        "busy_time_ms_per_second": 498.0,
+        "indicator": 0.498,
+        "is_backpressured": 0.0,
+        "metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond"
+        }
+      },
+      "checkpoint": {
+        "alignment_buffered_bytes": 0.0,
+        "alignment_time_ms": 16882.2503,
+        "duration_ms": 19022.0,
+        "failed_count": 1.0,
+        "latest_completed_id": 28,
+        "reporter_metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond",
+          "checkpoint_alignment_buffered_bytes": "",
+          "checkpoint_alignment_time_ms": "flink_taskmanager_job_task_checkpointAlignmentTime",
+          "checkpoint_duration_ms": "flink_jobmanager_job_lastCheckpointDuration",
+          "checkpoint_failed_count": "flink_jobmanager_job_numberOfFailedCheckpoints"
+        },
+        "start_delay_ms": null
+      },
+      "collected_at": "2026-05-27T23:31:04Z",
+      "elapsed_ms": 71905,
+      "iceberg_commit_lag": {
+        "iceberg_changelog_rows": 320,
+        "iceberg_max_event_id": 230320,
+        "lag_events": 0,
+        "max_event_id_gap": 0,
+        "source_max_event_id": 230320,
+        "source_rows": 320
+      },
+      "phase": "recovery",
+      "sample_index": 6
+    },
+    {
+      "backpressure": {
+        "backpressured_time_ms_per_second": 0.0,
+        "busy_time_ms_per_second": 649.0,
+        "indicator": 0.649,
+        "is_backpressured": 0.0,
+        "metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond"
+        }
+      },
+      "checkpoint": {
+        "alignment_buffered_bytes": 0.0,
+        "alignment_time_ms": 0.041667,
+        "duration_ms": 54.0,
+        "failed_count": 1.0,
+        "latest_completed_id": 39,
+        "reporter_metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond",
+          "checkpoint_alignment_buffered_bytes": "",
+          "checkpoint_alignment_time_ms": "flink_taskmanager_job_task_checkpointAlignmentTime",
+          "checkpoint_duration_ms": "flink_jobmanager_job_lastCheckpointDuration",
+          "checkpoint_failed_count": "flink_jobmanager_job_numberOfFailedCheckpoints"
+        },
+        "start_delay_ms": null
+      },
+      "collected_at": "2026-05-27T23:31:19Z",
+      "elapsed_ms": 86707,
+      "iceberg_commit_lag": {
+        "iceberg_changelog_rows": 320,
+        "iceberg_max_event_id": 230320,
+        "lag_events": 0,
+        "max_event_id_gap": 0,
+        "source_max_event_id": 230320,
+        "source_rows": 320
+      },
+      "phase": "recovery",
+      "sample_index": 7
+    },
+    {
+      "backpressure": {
+        "backpressured_time_ms_per_second": 0.0,
+        "busy_time_ms_per_second": 601.0,
+        "indicator": 0.601,
+        "is_backpressured": 0.0,
+        "metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond"
+        }
+      },
+      "checkpoint": {
+        "alignment_buffered_bytes": 0.0,
+        "alignment_time_ms": 0.005792,
+        "duration_ms": 43.0,
+        "failed_count": 1.0,
+        "latest_completed_id": 52,
+        "reporter_metric_names": {
+          "backpressure_busy_time_ms_per_second": "flink_taskmanager_job_task_busyTimeMsPerSecond",
+          "backpressure_is_backpressured": "flink_taskmanager_job_task_isBackPressured",
+          "backpressure_time_ms_per_second": "flink_taskmanager_job_task_softBackPressuredTimeMsPerSecond",
+          "checkpoint_alignment_buffered_bytes": "",
+          "checkpoint_alignment_time_ms": "flink_taskmanager_job_task_checkpointAlignmentTime",
+          "checkpoint_duration_ms": "flink_jobmanager_job_lastCheckpointDuration",
+          "checkpoint_failed_count": "flink_jobmanager_job_numberOfFailedCheckpoints"
+        },
+        "start_delay_ms": null
+      },
+      "collected_at": "2026-05-27T23:31:35Z",
+      "elapsed_ms": 102442,
+      "iceberg_commit_lag": {
+        "iceberg_changelog_rows": 320,
+        "iceberg_max_event_id": 230320,
+        "lag_events": 0,
+        "max_event_id_gap": 0,
+        "source_max_event_id": 230320,
+        "source_rows": 320
+      },
+      "phase": "recovery",
+      "sample_index": 8
+    }
+  ]
+}

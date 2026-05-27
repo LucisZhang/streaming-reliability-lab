@@ -1,7 +1,17 @@
 {
-  "generated_at": "2026-05-27T15:57:29.974Z",
+  "generated_at": "2026-05-27T23:44:30.010Z",
   "source": "showcase/results/*.json",
   "artifacts": [
+    {
+      "filename": "checkpoint_metrics.json",
+      "phase": "2.3",
+      "run_id": "20260527T233135Z-0b65b846",
+      "git_sha": "ce084a517395",
+      "started_at": "2026-05-27T23:29:38Z",
+      "finished_at": "2026-05-27T23:31:35Z",
+      "command": "make ckpt-metrics",
+      "logs": "showcase/logs/phase-2.3-checkpoint-metrics.log"
+    },
     {
       "filename": "eo_reconciliation.json",
       "phase": "2.1",

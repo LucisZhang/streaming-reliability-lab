@@ -124,6 +124,28 @@ Append one section per induced or observed failure.
 - Notes for next run: The fault is commit-time by construction: it is not thrown while mapping a
   record; it is thrown from the checkpoint-complete callback that drives Iceberg sink commits.
 
+### Phase 2.3 - Checkpoint Backpressure Thresholds
+
+- Phase: 2.3
+- Run ID: `20260527T233135Z-0b65b846`
+- Trigger: The metrics harness inserted a 320-event MySQL spike while the CDC job ran with
+  test-only 40 ms main-path and 120 ms alignment-probe sleep gates.
+- User-visible symptom: Checkpoint duration rose from a 55 ms baseline max to 19,022 ms under
+  load; reporter alignment time rose from 5.008125 ms to 16,882.2503 ms; the reporter-derived
+  pressure indicator peaked at 0.649; Iceberg changelog lag peaked at 320 events and recovered
+  to 0.
+- Detection command: `make ckpt-metrics`
+- Recovery command: No manual recovery. The job drained the backlog after the spike and the
+  harness canceled the job after three zero-lag recovery samples.
+- Validation: `summary.passed=true`; checkpoint duration, alignment time, pressure indicator,
+  checkpoint failure count recording, lag observation, and lag recovery checks all passed.
+- Artifacts: `showcase/results/checkpoint_metrics.json`,
+  `showcase/logs/phase-2.3-checkpoint-metrics.log`, and
+  `showcase/media/phase-2.3-checkpoint-metrics.svg`
+- Notes for next run: In this single-node CDC topology, explicit hard/soft backpressured-time
+  stayed at 0, so the documented pressure indicator uses Flink reporter busy-time saturation
+  when explicit backpressured time is zero.
+
 ## Recovery Procedures
 
 ### Core Stack Reset

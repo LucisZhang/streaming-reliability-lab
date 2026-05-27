@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+  width="980" height="540" viewBox="0 0 980 540"
+  role="img" aria-labelledby="title desc">
+  <title id="title">Checkpoint and backpressure metrics under induced load</title>
+  <desc id="desc">Time series for checkpoint duration, alignment time,
+    and Iceberg commit lag.</desc>
+  <style>
+    .bg { fill: #f7f8f6; }
+    .title { fill: #111815; font: 700 25px system-ui, sans-serif; }
+    .subtitle { fill: #58665f; font: 15px system-ui, sans-serif; }
+    .axis { stroke: #bcc8c0; stroke-width: 1; }
+    .grid { stroke: #dfe5e0; stroke-width: 1; }
+    .tick { fill: #5f6d65; font: 12px ui-monospace, monospace; }
+    .legend { fill: #26332d; font: 700 13px system-ui, sans-serif; }
+  </style>
+  <rect class="bg" x="0" y="0" width="980" height="540"/>
+  <text x="40" y="42" class="title">Phase 2.3 checkpoint metrics</text>
+  <text x="40" y="66" class="subtitle">Real Flink reporter scrape; 9 samples</text>
+  <line class="axis" x1="82" y1="422"
+    x2="882" y2="422"/>
+  <line class="axis" x1="82" y1="82" x2="82" y2="422"/>
+  <line class="grid" x1="82" y1="252.0"
+    x2="882" y2="252.0"/>
+  <text x="40" y="86" class="tick">19022</text>
+  <text x="54" y="426" class="tick">0</text>
+  <polyline fill="none" stroke="#1f6f68" stroke-width="3" points="82.0,421.0 182.0,421.2 282.0,421.3 382.0,421.1 482.0,421.1 582.0,82.0 682.0,82.0 782.0,421.0 882.0,421.2"/><polyline fill="none" stroke="#b2532f" stroke-width="3" points="82.0,421.9 182.0,422.0 282.0,422.0 382.0,418.5 482.0,244.6 582.0,354.6 682.0,120.2 782.0,422.0 882.0,422.0"/><polyline fill="none" stroke="#314f9f" stroke-width="3" points="82.0,422.0 182.0,422.0 282.0,422.0 382.0,416.3 482.0,416.3 582.0,419.1 682.0,422.0 782.0,422.0 882.0,422.0"/>
+  <rect x="82" y="440" width="18" height="4" fill="#1f6f68"/><text x="112" y="446" class="legend">Checkpoint duration</text><rect x="82" y="464" width="18" height="4" fill="#b2532f"/><text x="112" y="470" class="legend">Alignment time</text><rect x="82" y="488" width="18" height="4" fill="#314f9f"/><text x="112" y="494" class="legend">Commit lag</text>
+</svg>

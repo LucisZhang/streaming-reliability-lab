@@ -56,9 +56,8 @@ eo-verify: ensure-env build-flink
 small-file-rewrite: ensure-env build-flink
 	$(PYTHON) -m harness.small_file_rewrite $(ARGS)
 
-ckpt-metrics:
-	@echo "Phase 1.1 scaffold only: checkpoint metrics harness is introduced in a later phase."
-	@exit 2
+ckpt-metrics: ensure-env build-flink
+	$(PYTHON) -m harness.checkpoint_metrics $(ARGS)
 
 import-starrocks:
 	@echo "StarRocks is intentionally out of core and starts in M3."

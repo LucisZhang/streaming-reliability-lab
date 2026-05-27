@@ -29,6 +29,8 @@ public final class JobConfig {
   private static final String DEFAULT_WRITE_TARGET_FILE_SIZE_BYTES = "";
   private static final String DEFAULT_WRITE_PARQUET_ROW_GROUP_SIZE_BYTES = "";
   private static final String DEFAULT_COMMIT_MANIFEST_MIN_COUNT_TO_MERGE = "";
+  private static final long DEFAULT_BACKPRESSURE_SLEEP_MS = 0L;
+  private static final long DEFAULT_ALIGNMENT_PROBE_SLEEP_MS = 0L;
 
   private final ParameterTool parameters;
 
@@ -146,6 +148,14 @@ public final class JobConfig {
   public String commitManifestMinCountToMerge() {
     return parameters.get(
         "commit-manifest-min-count-to-merge", DEFAULT_COMMIT_MANIFEST_MIN_COUNT_TO_MERGE);
+  }
+
+  public long backpressureSleepMs() {
+    return parameters.getLong("backpressure-sleep-ms", DEFAULT_BACKPRESSURE_SLEEP_MS);
+  }
+
+  public long alignmentProbeSleepMs() {
+    return parameters.getLong("alignment-probe-sleep-ms", DEFAULT_ALIGNMENT_PROBE_SLEEP_MS);
   }
 
   public Map<String, String> icebergCatalogProperties() {

@@ -10,6 +10,7 @@ import org.apache.flink.cdc.connectors.mysql.table.StartupOptions;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.CheckpointConfig;
+import org.apache.flink.streaming.api.functions.sink.DiscardingSink;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.data.RowData;
 import org.apache.iceberg.flink.sink.FlinkSink;
@@ -71,6 +72,51 @@ public final class CdcToIcebergJob {
               .uid("phase-2-1-sink-commit-fault-once")
               .returns(TypeInformation.of(OrderChange.class))
               .setParallelism(1);
+    }
+
+    if (config.alignmentProbeSleepMs() > 0) {
+      DataStream<OrderChange> fastProbe =
+          changes
+              .rebalance()
+              .map(new IdentityOrderChangeMap())
+              .name("phase-2-3-alignment-probe-fast")
+              .uid("phase-2-3-alignment-probe-fast")
+              .returns(TypeInformation.of(OrderChange.class))
+              .setParallelism(1)
+              .disableChaining();
+      DataStream<OrderChange> slowProbe =
+          changes
+              .rebalance()
+              .map(new SlowOrderChangeMap(config.alignmentProbeSleepMs()))
+              .name("phase-2-3-alignment-probe-slow")
+              .uid("phase-2-3-alignment-probe-slow")
+              .returns(TypeInformation.of(OrderChange.class))
+              .setParallelism(1)
+              .disableChaining();
+      fastProbe
+          .union(slowProbe)
+          .map(new IdentityOrderChangeMap())
+          .name("phase-2-3-alignment-probe-union")
+          .uid("phase-2-3-alignment-probe-union")
+          .returns(TypeInformation.of(OrderChange.class))
+          .setParallelism(1)
+          .disableChaining()
+          .addSink(new DiscardingSink<>())
+          .name("phase-2-3-alignment-probe-discard")
+          .uid("phase-2-3-alignment-probe-discard")
+          .setParallelism(1);
+    }
+
+    if (config.backpressureSleepMs() > 0) {
+      changes =
+          changes
+              .rebalance()
+              .map(new SlowOrderChangeMap(config.backpressureSleepMs()))
+              .name("phase-2-3-backpressure-slow-gate")
+              .uid("phase-2-3-backpressure-slow-gate")
+              .returns(TypeInformation.of(OrderChange.class))
+              .setParallelism(1)
+              .disableChaining();
     }
 
     DataStream<RowData> currentRows =
