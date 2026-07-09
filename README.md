@@ -51,21 +51,44 @@ make dashboard-build     # validates results contract, then vite build
 make dashboard-preview   # serve the built dashboard locally
 ```
 
-## Quickstart
+## Local lite mode
+
+On a space-constrained laptop, use the no-Docker path:
+
+```bash
+make local-verify
+```
+
+This runs harness unit tests, lint/type checks, Maven verification, and the static dashboard
+build with results-contract validation. It is the recommended local command for reviewing
+the project and building the portfolio evidence dashboard. It does **not** reproduce the live
+Flink/MySQL/Iceberg failure run on demand.
+
+## Heavy reproduction path
 
 Pinned toolchain: Java 11 (Temurin), Maven 3.9, Python 3.11, Node 20
 (see [`docs/version-matrix.md`](docs/version-matrix.md) and `.tool-versions`).
 
 ```bash
 make doctor                                   # toolchain / env preflight
+make preflight-heavy                          # disk + Docker responsiveness guard
 make up-core                                  # MySQL + Flink JM/TM + MinIO + Iceberg JDBC catalog
 make gen ARGS="--events 10000 --seed 1"       # deterministic source generator
 make sql-mysql Q="SELECT COUNT(*) FROM orders"
 make eo-verify ARGS="--failure all"           # induce all five failure classes and reconcile
+make down                                     # remove containers and run volumes
 ```
 
+The heavy path should run on a workstation with at least 40 GiB free disk and enough Docker
+memory for Flink, MySQL, MinIO, and the Iceberg catalog. The Makefile refuses to start heavy
+targets when the repository volume has less than 25 GiB free or Docker does not respond
+promptly. See
+[`docs/local-lite-and-workstation.md`](docs/local-lite-and-workstation.md) for the full split
+between laptop-friendly verification and workstation reproduction.
+
 Lightweight checks (no Docker): `make test` (harness unit tests), `make lint`
-(ruff, black, mypy, Maven verify), `make dashboard-build`.
+(ruff, black, mypy, Maven verify), `make dashboard-build`, or the combined
+`make local-verify`.
 
 ## CI
 
@@ -82,3 +105,5 @@ outputs are committed as auditable artifacts.
 - **StarRocks (M3+) has not been started** — the `olap` compose profile,
   serving-table imports, and the compaction benchmark are reserved future work.
 - Single-node Docker Compose only; no cloud, no multi-node, no GPU.
+- Local laptops are treated as evidence-review machines, not the default heavy reproduction
+  environment. Preserve workstation evidence before making any "reproduced on demand" claim.

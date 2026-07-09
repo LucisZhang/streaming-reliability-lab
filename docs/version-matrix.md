@@ -21,3 +21,6 @@ Selected on 2026-05-26 for a single-node local reliability lab.
 - PyIceberg is not a correctness reader for v2 upsert tables that contain equality deletes. Phase 1.1 fixes the split: `make sql-iceberg` identifies the Flink SQL batch data path, while `make sql-iceberg-meta` identifies the pyiceberg metadata-only path.
 - StarRocks is excluded from `core`. Catalog smoke tests and internal table imports start in M3.
 - No multi-node, GPU, or managed cloud assumptions are part of this stack.
+- The full Docker reproduction is not laptop-default. Heavy targets are guarded by
+  `make preflight-heavy` and should run on a workstation with at least 40 GiB free disk; use
+  `make local-verify` for no-Docker laptop review.

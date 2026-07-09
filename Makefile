@@ -10,7 +10,8 @@ COMPOSE := docker compose --env-file $(ENV_FILE) -f infra/docker-compose.yml
 PYTHONPATH := $(ROOT)/harness
 export PYTHONPATH
 
-.PHONY: ensure-env doctor up-core up-olap ps down build-flink submit-flink savepoint restore
+.PHONY: ensure-env doctor local-verify artifact-verify preflight-heavy
+.PHONY: up-core up-olap ps down build-flink submit-flink savepoint restore
 .PHONY: gen eo-verify small-file-rewrite ckpt-metrics import-starrocks smoke-starrocks-catalog
 .PHONY: compaction-bench dq backfill test test-cdc lint sql-mysql sql-iceberg sql-iceberg-meta
 .PHONY: sql-starrocks dashboard-build dashboard-preview
@@ -21,10 +22,21 @@ ensure-env:
 doctor:
 	$(PYTHON) -m harness.doctor
 
-up-core: ensure-env
+local-verify:
+	$(MAKE) test
+	$(MAKE) lint
+	$(MAKE) dashboard-build
+
+artifact-verify:
+	scripts/sync-results-to-dashboard.sh
+
+preflight-heavy:
+	P1_REPO_ROOT=$(ROOT) $(PYTHON) scripts/preflight-heavy.py
+
+up-core: ensure-env preflight-heavy
 	RESOURCE_PROFILE=$(RESOURCE_PROFILE) $(COMPOSE) --profile core up -d --build
 
-up-olap: ensure-env
+up-olap: ensure-env preflight-heavy
 	RESOURCE_PROFILE=$(RESOURCE_PROFILE) $(COMPOSE) --profile olap up -d --build
 
 ps: ensure-env
@@ -50,13 +62,13 @@ restore:
 gen: ensure-env
 	$(PYTHON) -m harness.generator $(ARGS)
 
-eo-verify: ensure-env build-flink
+eo-verify: ensure-env preflight-heavy build-flink
 	$(PYTHON) -m harness.eo_verify $(ARGS)
 
-small-file-rewrite: ensure-env build-flink
+small-file-rewrite: ensure-env preflight-heavy build-flink
 	$(PYTHON) -m harness.small_file_rewrite $(ARGS)
 
-ckpt-metrics: ensure-env build-flink
+ckpt-metrics: ensure-env preflight-heavy build-flink
 	$(PYTHON) -m harness.checkpoint_metrics $(ARGS)
 
 import-starrocks:
@@ -82,7 +94,7 @@ backfill:
 test:
 	$(PYTHON) -m pytest -q harness/tests
 
-test-cdc: ensure-env build-flink
+test-cdc: ensure-env preflight-heavy build-flink
 	CDC_INTEGRATION=1 $(PYTHON) -m pytest harness/tests/cdc_correctness -v
 
 lint:

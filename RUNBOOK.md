@@ -8,6 +8,16 @@ This runbook is the durable incident record for the reliability lab. Phase 1.1 c
 - `core` profile: MySQL, Flink JobManager/TaskManager, MinIO, and the Iceberg JDBC catalog database schema in MySQL.
 - `olap` profile is reserved for StarRocks in M3+.
 - Use repo-root `make` targets only.
+- Space-constrained laptops are **local lite** environments: run `make local-verify` and the
+  static dashboard; do not treat them as the default place for the heavy failure-reproduction
+  run.
+- Heavy Docker targets (`make up-core`, `make eo-verify`, `make test-cdc`, `make
+  small-file-rewrite`, `make ckpt-metrics`) run `make preflight-heavy` first. The default guard
+  refuses to start when the repository volume has less than 25 GiB free or Docker does not
+  respond within 10 seconds.
+- Full five-failure-class reproduction should run on a workstation with at least 40 GiB free
+  disk and enough Docker memory for Flink, MySQL, MinIO, and the Iceberg catalog. Preserve the
+  evidence bundle described in `docs/local-lite-and-workstation.md`.
 
 ## Incident Log
 
@@ -153,10 +163,15 @@ Append one section per induced or observed failure.
 Use only when a phase explicitly allows a clean reset:
 
 ```bash
+make preflight-heavy
 make down
 make up-core
 make ps
 ```
+
+If Docker is unresponsive because the host disk is full, do not loop on Docker commands. Free
+disk first, restart/recover Docker if needed, then run `make down` once to remove the lab
+containers and volumes.
 
 ### Source Data Regeneration
 

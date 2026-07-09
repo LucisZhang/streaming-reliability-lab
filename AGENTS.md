@@ -89,6 +89,8 @@ One catalog, shared by Flink (writer) and StarRocks (reader):
 
 ```bash
 make doctor            # verify Java/Maven/Python/Node versions match mise.toml; fail loudly if not
+make local-verify      # laptop-safe: unit tests + lint/Maven verify + dashboard contract/build
+make preflight-heavy   # fail-fast guard for heavy Docker work: free disk + Docker responsiveness
 make up-core           # docker compose --profile core up -d   (MySQL, Flink, MinIO, JDBC catalog)
 make up-olap           # docker compose --profile olap up -d    (adds StarRocks; M3+ only)
 make ps                # compose ps; expect healthy
@@ -139,6 +141,14 @@ Success for any Phase = its stated `make` target(s) exit 0 and produce the named
   the concrete blockers when it is not ready.
 
 ## Resource Profiles
+
+Default operating split:
+- **local lite** — use on constrained laptops. Run `make local-verify`, inspect committed
+  evidence, and build the static dashboard. Do not start Docker or claim on-demand heavy
+  reproduction from this path.
+- **workstation reproduction** — use for `make up-core`, `make eo-verify ARGS="--failure all"`,
+  `make test-cdc`, `make small-file-rewrite`, and `make ckpt-metrics`. These targets run
+  `make preflight-heavy` first and should have at least 40 GiB free disk on the host.
 
 Set `RESOURCE_PROFILE=small|default` (env, read by Makefile + harness):
 - **small** — reduced row counts, longer checkpoint intervals, StarRocks FE/BE memory capped;
