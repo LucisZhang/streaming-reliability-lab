@@ -1,0 +1,12 @@
+Untagged: p1-reliability-lab/flink:1.20.4-java11
+Deleted: sha256:2d7f8b19c9062edaaa5bf4fe147a05afa4e104d421fcf7538ddaad5c52f32e03
+Untagged: mysql:8.0.36
+Deleted: sha256:a532724022429812ec797c285c1b540a644c15e248579c6bfdf12a8fbaab4964
+Untagged: quay.io/minio/minio:RELEASE.2025-04-22T22-12-26Z
+Deleted: sha256:a1ea29fa28355559ef137d71fc570e508a214ec84ff8083e39bc5428980b015e
+Untagged: quay.io/minio/mc:RELEASE.2025-04-16T18-13-26Z
+Deleted: sha256:aead63c77f9db9107f1696fb08ecb0faeda23729cde94b0f663edf4fe09728e3
+Untagged: alpine:3.20
+Deleted: sha256:d9e853e87e55526f6b2917df91a2115c36dd7c696a35be12163d44e6e2a4b6bc
+Untagged: hello-world:latest
+Deleted: sha256:96498ffd522e70807ab6384a5c0485a79b9c7c08ca79ba08623edcad1054e62d

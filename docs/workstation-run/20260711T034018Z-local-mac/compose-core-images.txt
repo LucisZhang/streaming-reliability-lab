@@ -1,0 +1,5 @@
+p1-reliability-lab/flink:1.20.4-java11
+p1-reliability-lab/flink:1.20.4-java11
+mysql:8.0.36
+quay.io/minio/minio:RELEASE.2025-04-22T22-12-26Z
+quay.io/minio/mc:RELEASE.2025-04-16T18-13-26Z

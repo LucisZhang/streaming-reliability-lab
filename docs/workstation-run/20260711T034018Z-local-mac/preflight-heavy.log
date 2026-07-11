@@ -1,0 +1,3 @@
+P1_REPO_ROOT=/Users/hsiangkuochang/p1-reliability-lab /Users/hsiangkuochang/p1-reliability-lab/.venv/bin/python scripts/preflight-heavy.py
+disk preflight: 69.1 GiB free at /Users/hsiangkuochang/p1-reliability-lab (minimum 25 GiB for heavy Docker reproduction)
+docker preflight: daemon responsive (server 28.1.1)

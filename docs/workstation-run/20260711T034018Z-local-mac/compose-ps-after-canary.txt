@@ -1,0 +1,6 @@
+docker compose --env-file .env -f infra/docker-compose.yml ps
+NAME                               IMAGE                                              COMMAND                  SERVICE       CREATED         STATUS                   PORTS
+p1_reliability_lab-jobmanager-1    p1-reliability-lab/flink:1.20.4-java11             "/docker-entrypoint.…"   jobmanager    2 minutes ago   Up 2 minutes (healthy)   6123/tcp, 0.0.0.0:9249->9249/tcp, 0.0.0.0:18081->8081/tcp
+p1_reliability_lab-minio-1         quay.io/minio/minio:RELEASE.2025-04-22T22-12-26Z   "/usr/bin/docker-ent…"   minio         2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:9000-9001->9000-9001/tcp
+p1_reliability_lab-mysql-1         mysql:8.0.36                                       "docker-entrypoint.s…"   mysql         2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:3306->3306/tcp, 33060/tcp
+p1_reliability_lab-taskmanager-1   p1-reliability-lab/flink:1.20.4-java11             "/docker-entrypoint.…"   taskmanager   2 minutes ago   Up 2 minutes (healthy)   6123/tcp, 8081/tcp

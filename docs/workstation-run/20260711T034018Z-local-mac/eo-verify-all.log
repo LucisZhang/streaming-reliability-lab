@@ -1,9 +1,50 @@
+P1_REPO_ROOT=/Users/hsiangkuochang/p1-reliability-lab /Users/hsiangkuochang/p1-reliability-lab/.venv/bin/python scripts/preflight-heavy.py
+disk preflight: 64.7 GiB free at /Users/hsiangkuochang/p1-reliability-lab (minimum 25 GiB for heavy Docker reproduction)
+docker preflight: daemon responsive (server 28.1.1)
+mvn -q -Dmaven.repo.local=/Users/hsiangkuochang/p1-reliability-lab/.m2/repository -f flink-jobs/pom.xml clean package
+/Users/hsiangkuochang/p1-reliability-lab/.venv/bin/python -m harness.eo_verify --failure all
+checking core services
+task-crash: starting deterministic scenario
+resetting running jobs, MySQL source table, and Iceberg target tables
+task-crash: submitted job 2b8866fc8c2455290dad27d662b35cb9 with one-shot crash marker /tmp/p1-phase-1-3-task-crash-b75f9dd612104912a87417996063e1db.marker
+task-crash: baseline committed before crash at checkpoint 3
+task-crash: controlled task exception observed; waiting for automatic recovery
+task-crash: snapshot_diff_count=0 event_id_audit_consistent=True
+cancelling running Flink job 2b8866fc8c2455290dad27d662b35cb9
+checkpoint-restore: starting deterministic scenario
+resetting running jobs, MySQL source table, and Iceberg target tables
+cancelling running Flink job 2b8866fc8c2455290dad27d662b35cb9
+checkpoint-restore: submitted job 1359107f59ba2529c4330997fd445ebe
+checkpoint-restore: stopping job 1359107f59ba2529c4330997fd445ebe after checkpoint 3
+checkpoint-restore: restored job fd3b1e7de60630cdc2543c8bbe4c65a3 from file:///opt/flink/checkpoints/1359107f59ba2529c4330997fd445ebe/chk-4
+checkpoint-restore: snapshot_diff_count=0 event_id_audit_consistent=True
+cancelling running Flink job fd3b1e7de60630cdc2543c8bbe4c65a3
+jobmanager-restart: starting deterministic scenario
+resetting running jobs, MySQL source table, and Iceberg target tables
+cancelling running Flink job fd3b1e7de60630cdc2543c8bbe4c65a3
+jobmanager-restart: submitted job cde1155761ca47b878b71b0ef672615c
+jobmanager-restart: restarting JobManager after checkpoint 3
+jobmanager-restart: ensured TaskManager is running after JobManager restart
+jobmanager-restart: active job after recovery af19a1702d5de15a8a24a10266b78170
+jobmanager-restart: snapshot_diff_count=0 event_id_audit_consistent=True
+cancelling running Flink job af19a1702d5de15a8a24a10266b78170
+savepoint-restore: starting deterministic scenario
+resetting running jobs, MySQL source table, and Iceberg target tables
+cancelling running Flink job af19a1702d5de15a8a24a10266b78170
+savepoint-restore: submitted job 38d95a422bee89140776cf01e598c20a
+savepoint-restore: created savepoint file:/opt/flink/savepoints/savepoint-38d95a-60eae85ceb2e
+savepoint-restore: restored job 6160d317d1afa6fb321a730ce96fbf7d from file:/opt/flink/savepoints/savepoint-38d95a-60eae85ceb2e
+savepoint-restore: snapshot_diff_count=0 event_id_audit_consistent=True
+cancelling running Flink job 6160d317d1afa6fb321a730ce96fbf7d
+sink-commit-fault: starting deterministic scenario
+resetting running jobs, MySQL source table, and Iceberg target tables
+sink-commit-fault: submitted job 47831d9f5075c5a422391bf793be70f7 with checkpoint-complete marker /tmp/p1-phase-2-1-sink-commit-425cef8c077843c3827ac597774196ea.marker
+sink-commit-fault: baseline committed before injected fault at checkpoint 3
+sink-commit-fault: checkpoint-complete exception observed; waiting for recovery
+sink-commit-fault: snapshot_diff_count=0 event_id_audit_consistent=True
+cancelling running Flink job 47831d9f5075c5a422391bf793be70f7
 {
   "claim_boundary": "MySQL CDC -> Flink -> Iceberg",
-  "command": "make eo-verify ARGS=\"--failure task-crash,checkpoint-restore,jobmanager-restart,savepoint-restore,sink-commit-fault\"",
-  "finished_at": "2026-07-11T03:52:42Z",
-  "git_sha": "05738dd80038",
-  "logs": "showcase/logs/phase-2.1-eo-verify.log",
   "phase": "2.1",
   "reader": "Flink SQL batch",
   "results": [
@@ -731,20 +772,6 @@
       "trigger": "test-only checkpoint-complete fault after event_id=9303"
     }
   ],
-  "run_id": "20260711T035242Z-b518d211",
-  "stack_versions": {
-    "flink": "1.20.4",
-    "flink_cdc": "3.6.0",
-    "iceberg": "1.10.x",
-    "java": "11",
-    "maven": "3.9",
-    "minio": "RELEASE.2025-04-22T22-12-26Z",
-    "mysql": "8.0.36",
-    "node": "20",
-    "python": "3.11",
-    "starrocks": "3.3.x (M3+)"
-  },
-  "started_at": "2026-07-11T03:47:48Z",
   "summary": {
     "all_event_id_audits_consistent": true,
     "all_snapshot_diffs_zero": true,

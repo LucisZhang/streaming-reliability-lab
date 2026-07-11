@@ -1,0 +1,6 @@
+/Users/hsiangkuochang/p1-reliability-lab/.venv/bin/python -m harness.doctor
+doctor ok
+  - java: openjdk version "11.0.31" 2026-04-21 [/opt/homebrew/opt/openjdk@11/bin/java]
+  - maven: Apache Maven 3.9.16 (2bdd9fddda4b155ebf8000e807eb73fd829a51d5) [/opt/homebrew/opt/maven/bin/mvn]
+  - python: Python 3.11.15 [/opt/homebrew/bin/python3.11]
+  - node: v20.20.2 [/opt/homebrew/opt/node@20/bin/node]
