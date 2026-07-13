@@ -73,7 +73,8 @@ make dashboard-preview   # serve the built dashboard locally
 ![Recorded evidence dashboard](showcase/media/phase-1.4-dashboard.jpg)
 
 The public portfolio adds an interactive captured-run replay over the same JSON package.
-Its Review URL is linked after the isolated Portfolio Phase 2 branch is deployed.
+Open the [Portfolio Phase 2 Review](https://portfolio-site-phase2-review.vercel.app/engineering/p1-reliability-lab).
+External reviewers receive the Vercel Shareable Link parameter separately; it is not stored in this repository.
 
 ## Local lite mode
 

@@ -58,7 +58,8 @@ make down
 
 ![证据面板](showcase/media/phase-1.4-dashboard.jpg)
 
-公开 Portfolio 会在独立的 Phase 2 Review 部署后补上交互式回放链接。
+可在 [Portfolio Phase 2 Review](https://portfolio-site-phase2-review.vercel.app/engineering/p1-reliability-lab)
+查看交互式回放。外部审阅者所需的 Vercel Shareable Link 参数单独提供，不写入本仓库。
 
 ## 范围
 
