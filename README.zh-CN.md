@@ -58,8 +58,8 @@ make down
 
 ![证据面板](showcase/media/phase-1.4-dashboard.jpg)
 
-可在 [Portfolio Phase 2 Review](https://portfolio-site-phase2-review.vercel.app/engineering/p1-reliability-lab)
-查看交互式回放。外部审阅者所需的 Vercel Shareable Link 参数单独提供，不写入本仓库。
+可在公开的 [Portfolio Phase 2 Review](https://portfolio-site-gpt-review.vercel.app/engineering/p1-reliability-lab)
+查看交互式回放。隔离的 Review 部署无需 Vercel 登录或查询参数密钥。
 
 ## 范围
 
