@@ -26,6 +26,25 @@ only after the phase that proves it has passed and produced auditable JSON under
 | Iceberg small-file maintenance: `rewrite_data_files` + manifest rewrite measurably reduced data-file and manifest counts, raised median file size, and lowered `planFiles()` planning latency. | [`showcase/results/iceberg_small_file_rewrite.json`](showcase/results/iceberg_small_file_rewrite.json), chart in [`showcase/media/`](showcase/media/) |
 | Checkpoint behavior under load: real Prometheus-reporter metrics show checkpoint duration/alignment rising under a deterministic input spike, backpressure appearing, Iceberg commit lag growing and **recovering to zero**. | [`showcase/results/checkpoint_metrics.json`](showcase/results/checkpoint_metrics.json), chart in [`showcase/media/`](showcase/media/) |
 
+## Current captured run
+
+Run `20260711T034018Z-local-mac` at evidence commit `7eab9c3` is one recorded
+Apple Silicon macOS run with 16 GiB host RAM. Its Docker Desktop VM reported
+10 CPUs and about 7.65 GiB memory. All five induced failure classes recovered
+with zero snapshot differences and consistent event-ID audits.
+
+| Failure class | Recorded result | Primary evidence |
+| --- | --- | --- |
+| Task crash | Pass | [`eo_reconciliation-all.json`](docs/workstation-run/20260711T034018Z-local-mac/eo_reconciliation-all.json) |
+| Checkpoint restore | Pass | Same captured-run JSON, `results[1]` |
+| JobManager restart | Pass | Same captured-run JSON, `results[2]` |
+| Savepoint restore | Pass | Same captured-run JSON, `results[3]` |
+| Sink commit fault | Pass | Same captured-run JSON, `results[4]` |
+
+Read the [captured-run summary](docs/workstation-run/20260711T034018Z-local-mac/SUMMARY.md)
+for the exact commands and environment. This result proves that one run; it does not
+establish universal hardware compatibility or one-command reproducibility.
+
 ## How the evidence works
 
 - **Correctness-safe reading.** Iceberg v2 upsert tables contain equality deletes;
@@ -50,6 +69,11 @@ renders the artifacts and their provenance and calls no backend.
 make dashboard-build     # validates results contract, then vite build
 make dashboard-preview   # serve the built dashboard locally
 ```
+
+![Recorded evidence dashboard](showcase/media/phase-1.4-dashboard.jpg)
+
+The public portfolio adds an interactive captured-run replay over the same JSON package.
+Its Review URL is linked after the isolated Portfolio Phase 2 branch is deployed.
 
 ## Local lite mode
 
