@@ -1,6 +1,8 @@
-# Reliability Lab — MySQL CDC → Flink → Iceberg
+[English](README.md) | [简体中文](README.zh-CN.md)
 
-[![ci](https://github.com/LucisZhang/p1-reliability-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/LucisZhang/p1-reliability-lab/actions/workflows/ci.yml)
+# Streaming Reliability Lab — MySQL CDC → Flink → Iceberg
+
+[![ci](https://github.com/LucisZhang/streaming-reliability-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/LucisZhang/streaming-reliability-lab/actions/workflows/ci.yml)
 
 A single-node **reliability lab** for a real-time data pipeline:
 `MySQL CDC → Flink 1.20 → Apache Iceberg v2 (upsert)`.
