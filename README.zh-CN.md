@@ -27,7 +27,7 @@ flowchart LR
 
 ## 已验证的声明
 
-声明是**门禁式（gated）**的：只有当证明某项声明的阶段通过、并在
+声明采用 **门禁式（gated）** 规则：只有当证明某项声明的阶段通过、并在
 [`showcase/results/`](showcase/results/) 下产出可审计的 JSON 之后，该声明才会被加入
 [`docs/resume-claims-after-verification.md`](docs/resume-claims-after-verification.md)。
 
